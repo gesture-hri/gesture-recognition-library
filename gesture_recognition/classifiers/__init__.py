@@ -1,0 +1,2 @@
+from gesture_recognition.classifiers.trainable_classifier import TrainableClassifier
+from gesture_recognition.classifiers.sklearn_classifier import SklearnClassifier
