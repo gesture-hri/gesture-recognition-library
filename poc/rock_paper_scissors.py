@@ -11,7 +11,7 @@ from gesture_recognition.mediapipe_cache import PickleCache
 from gesture_recognition.preprocessors import DefaultPreprocessor
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger('asl alphabet pipeline')
+logger = logging.getLogger('rock paper scissors pipeline')
 
 if __name__ == '__main__':
     paths = [
