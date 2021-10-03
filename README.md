@@ -35,6 +35,12 @@ Once build is finished find .whl file in dist directory and run:
 pip install path/to/.whl/file 
 ```
 
+### Code formatting
+To format code automatically, run: 
+```shell
+poetry run black .
+```
+
 ### Basic Usage
 The core functionality of the library is provided by GestureRecognizer class, from gesture_recognizer module.
 To instantiate GestureRecognizer three other objects are needed: 
