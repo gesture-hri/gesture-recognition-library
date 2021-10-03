@@ -14,7 +14,9 @@ class DefaultPreprocessor(Preprocessor):
         return image
 
     def preprocess(self, mediapipe_output, *args, **kwargs):
-        return StandardScaler().fit_transform(np.array(
+        landmarks = np.array(
             [[landmark.x, landmark.y, landmark.z]
              for landmarks in mediapipe_output for landmark in landmarks.landmark],
-        )).reshape((-1,))
+        )
+
+        return StandardScaler().fit_transform(landmarks).reshape((-1,))
