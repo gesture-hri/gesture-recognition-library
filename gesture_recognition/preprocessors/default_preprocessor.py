@@ -9,7 +9,6 @@ class DefaultPreprocessor(Preprocessor):
     Default preprocessor functionality scope is quite restricted. It simply extracts 3D coordinates of joint landmarks
     and flattens resulting array.
     """
-
     def normalize(self, image, *args, **kwargs):
         return image
 
