@@ -34,7 +34,7 @@ if __name__ == '__main__':
     classifier = SklearnClassifier(ExtraTreesClassifier(), random_state=random_state, test_size=0.2)
     preprocessor = DefaultPreprocessor()
     cache = PickleCache('../pickle_cache_dir')
-    gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache, hands=True)
+    gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache)
     score = gesture_recognizer.train_end_evaluate('rock_paper_scissors', samples, labels)
 
     logger.info(f'Extra trees classifier scored {score} on rock-paper-scissors dataset')
