@@ -116,7 +116,7 @@ class GestureRecognizer:
     def to_pickle_binary(self, path):
         """
         Serializes GestureRecognizer to pickle binary format and saves under provided path.
-        Custom serialization and deserialization is necessary as mediapipe instance cannot be picled.
+        Custom serialization and deserialization is necessary as mediapipe instance cannot be pickled.
         :param path: File path under which GestureRecognizer instance is expected to be stored.
         """
         with open(path, 'w+b') as f:
