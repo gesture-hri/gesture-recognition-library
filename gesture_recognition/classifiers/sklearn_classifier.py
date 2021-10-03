@@ -5,6 +5,11 @@ from gesture_recognition.classifiers.trainable_classifier import TrainableClassi
 
 class SklearnClassifier(TrainableClassifier):
     def __init__(self, sklearn_model, test_size=None, random_state=None):
+        """
+        :param sklearn_model: Instantiated sklearn model (LogisticRegression, IsolationForest etc.)
+        :param test_size: Parameter controlling train test ration while training.
+        :param random_state: Globally saved and used random state might be useful for repeatable results.
+        """
         self.sklearn_model = sklearn_model
         self.test_size = test_size
         self.random_state = random_state
