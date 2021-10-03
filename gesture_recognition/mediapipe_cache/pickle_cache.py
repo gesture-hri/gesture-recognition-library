@@ -18,6 +18,9 @@ class PickleCache(MediapipeCache):
         self.root_path = root_path
 
     def initialize(self, *args, **kwargs):
+        """
+        Creates directory specified by root_path attribute if not exists.
+        """
         os.makedirs(self.root_path, os.O_RDWR, exist_ok=True)
 
     def store_mediapipe_output(self, samples: List[np.ndarray], labels: List[np.ndarray], identifier: str):
@@ -34,5 +37,8 @@ class PickleCache(MediapipeCache):
         except FileNotFoundError:
             raise MediapipeCache.Error(f'Dataset identified as {identifier} not found in cache')
 
-    def remove_mediapipe_output(self, *args, **kwargs):
-        raise Exception('Unimplemented method')
+    def remove_mediapipe_output(self, identifier, *args, **kwargs):
+        try:
+            os.remove(os.path.join(self.root_path, identifier))
+        except FileNotFoundError:
+            raise MediapipeCache.Error(f'Dataset identified as {identifier} not found in cache')
