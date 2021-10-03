@@ -8,7 +8,7 @@ class MediapipeCache(ABC):
     """
     class Error(Exception):
         """
-        Base class for related mediapipe cache output errors and exception
+        Base class for related mediapipe cache output errors and exceptions
         """
         pass
 

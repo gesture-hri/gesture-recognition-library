@@ -49,9 +49,9 @@ class GestureRecognizer:
 
     def _image_flow(self, image: np.ndarray):
         """
-        Performs all operations that single raw image needs to be fed into classifier.
+        Performs normalization and mediapipe processing on raw image before it is fed into classifier.
         :param image: Image to perform operations on.
-        :return: Data format that can be accepted by classifier.
+        :return: Data format that can be accepted by preprocessor.
         """
         normalized = self.preprocessor.normalize(image)
 
@@ -72,10 +72,10 @@ class GestureRecognizer:
         """
         Trains and evaluates top classifier.
         :param categories: List of objects associated with gesture numeric label.
-        :param samples:Raw images in numpy array format.
+        :param samples: Raw images in numpy array format.
         :param labels: Categories corresponding to images from samples.
         :param identifier: Dataset name. Essential for cache framework.
-        :return: Accuracy score achieved by classifier on provided dataset.
+        :return: Score achieved by classifier on provided dataset. Score format is defined by classifier class.
         """
         if identifier is None and self.cache is None:
             raise Exception('Unable to use dataset cache without identifier specified.')
