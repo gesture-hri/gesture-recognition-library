@@ -42,7 +42,7 @@ class GestureRecognizer:
                 max_num_hands=1,
             )
         else:
-            self.mediapipe_handle = mediapipe.solutions.holistic.Holistic(
+            self.mediapipe_handle = mediapipe.solutions.pose.Pose(
                 static_image_mode=True
             )
 
@@ -58,13 +58,13 @@ class GestureRecognizer:
         normalized = self.preprocessor.normalize(image)
 
         if self.hands:
-            mediapipe_output = self.mediapipe_handle.process(
-                normalized
-            ).multi_hand_landmarks
-        else:
-            mediapipe_output = self.mediapipe_handle.process(normalized).pose_landmarks
+            return self.mediapipe_handle.process(normalized).multi_hand_landmarks
 
-        return mediapipe_output
+        pose_mediapipe_output = self.mediapipe_handle.process(normalized).pose_landmarks
+        if pose_mediapipe_output is not None:
+            # In case of Pose solution only Single NormalizedLandmarkList object is returned.
+            # self.preprocessor expects list of that
+            return [pose_mediapipe_output]
 
     def train_end_evaluate(
         self,

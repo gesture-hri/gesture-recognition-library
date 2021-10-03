@@ -36,7 +36,7 @@ if __name__ == "__main__":
     )
     preprocessor = DefaultPreprocessor()
     cache = PickleCache("../pickle_cache_dir")
-    gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache, hands=True)
+    gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache)
     score = gesture_recognizer.train_end_evaluate(
         "rock_paper_scissors", samples, labels
     )
