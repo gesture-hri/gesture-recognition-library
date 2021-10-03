@@ -2,10 +2,33 @@
 Python library that provides rich yet highly customizable interface for training and evaluation of 
 gesture image classifiers on any dataset.
 
+### Development setup
+Following steps describe setting up development environment on your local computer.
+
+#### Runtime setup
+The recommended way to install language/runtimes is with the `asdf` version manager tool. Follow the instructions [here](https://asdf-vm.com/#/core-manage-asdf-vm) to install it.
+
+Once `asdf` is installed you can install the needed plugins with: 
+```shell
+asdf plugin-add python
+```
+Then you can install the required versions of Erlang and Elixir with: 
+```shell
+asdf install
+```
+as the project has a `.tool-version` file that asdf looks at to set the above language runtimes to specific versions when inside this project directory.
+
+For python dependency management, we use `poetry`. Please install it following instructions [here](https://python-poetry.org/docs/#installation). 
+After installing `poetry` you can run 
+```shell
+poetry install
+```
+to install project dependencies defined in `pyproject.toml` to your setup. 
+
 ### Build and installation
 To build library simply run:
 ```shell
-python setup.py bdist_wheel
+poetry build
 ```
 Once build is finished find .whl file in dist directory and run:
 ```shell
