@@ -13,7 +13,6 @@ logger = logging.getLogger('gesture recognizer')
 
 
 # TODO: Add .from_config file method.
-#  Override pickling to ensure classifier is correctly pickled.
 class GestureRecognizer:
     categories: List[any]
 
