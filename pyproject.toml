@@ -1,8 +1,9 @@
 [tool.poetry]
-name = "gesture-recognition-library"
+name = "gesture-recognition"
 version = "0.0.1"
 description = "Python library that provides rich yet highly customizable interface for training and evaluation of gesture image classifiers on any dataset."
 authors = ["Kacper Karon <karonkacper@gmail.com>", "Maciej Tratnowiecki <mtratnowiecki@gmail.com>", "Marcin Wasowicz <marcinkwasowicz@gmail.com>"]
+packages = [{ include = "gesture_recognition" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
