@@ -6,10 +6,12 @@ class MediapipeCache(ABC):
     All cache frameworks used by GestureRecognizer to store mediapipe output between repeated experiments
     should derive from this class.
     """
+
     class Error(Exception):
         """
         Base class for related mediapipe cache output errors and exceptions
         """
+
         pass
 
     @abstractmethod

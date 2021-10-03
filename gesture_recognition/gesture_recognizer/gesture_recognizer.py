@@ -9,7 +9,7 @@ from gesture_recognition.classifiers import TrainableClassifier
 from gesture_recognition.mediapipe_cache import MediapipeCache
 from gesture_recognition.preprocessors import Preprocessor
 
-logger = logging.getLogger('gesture recognizer')
+logger = logging.getLogger("gesture recognizer")
 
 
 # TODO: Add .from_config file method.
@@ -17,11 +17,11 @@ class GestureRecognizer:
     categories: List[any]
 
     def __init__(
-            self,
-            classifier: TrainableClassifier,
-            preprocessor: Preprocessor,
-            cache: MediapipeCache = None,
-            hands=True,
+        self,
+        classifier: TrainableClassifier,
+        preprocessor: Preprocessor,
+        cache: MediapipeCache = None,
+        hands=True,
     ):
         """
         :param classifier: Classifier that will be used on top of mediapipe output to classify gestures
@@ -42,7 +42,9 @@ class GestureRecognizer:
                 max_num_hands=1,
             )
         else:
-            self.mediapipe_handle = mediapipe.solutions.holistic.Holistic(static_image_mode=True)
+            self.mediapipe_handle = mediapipe.solutions.holistic.Holistic(
+                static_image_mode=True
+            )
 
         if self.cache is not None:
             self.cache.initialize()
@@ -56,18 +58,20 @@ class GestureRecognizer:
         normalized = self.preprocessor.normalize(image)
 
         if self.hands:
-            mediapipe_output = self.mediapipe_handle.process(normalized).multi_hand_landmarks
+            mediapipe_output = self.mediapipe_handle.process(
+                normalized
+            ).multi_hand_landmarks
         else:
             mediapipe_output = self.mediapipe_handle.process(normalized).pose_landmarks
 
         return mediapipe_output
 
     def train_end_evaluate(
-            self,
-            identifier: str = None,
-            samples: Iterable[np.ndarray] = None,
-            labels: Iterable[np.int] = None,
-            categories: List[any] = None,
+        self,
+        identifier: str = None,
+        samples: Iterable[np.ndarray] = None,
+        labels: Iterable[np.int] = None,
+        categories: List[any] = None,
     ):
         """
         Trains and evaluates top classifier.
@@ -78,13 +82,13 @@ class GestureRecognizer:
         :return: Score achieved by classifier on provided dataset. Score format is defined by classifier class.
         """
         if identifier is None and self.cache is None:
-            raise Exception('Unable to use dataset cache without identifier specified.')
+            raise Exception("Unable to use dataset cache without identifier specified.")
 
         self.categories = categories
 
         try:
             x, y = self.cache.retrieve_mediapipe_output(identifier)
-            logger.info(f'Dataset identified as {identifier} found in cache.')
+            logger.info(f"Dataset identified as {identifier} found in cache.")
         except (MediapipeCache.Error, AttributeError):
             x = [self._image_flow(sample) for sample in samples]
             y = [label for idx, label in enumerate(labels) if x[idx] is not None]
@@ -95,7 +99,7 @@ class GestureRecognizer:
 
         x = [self.preprocessor.preprocess(sample) for sample in x]
 
-        logger.info(f'Using {len(x)} samples for training and evaluation')
+        logger.info(f"Using {len(x)} samples for training and evaluation")
         return self.classifier.train(x, y)
 
     def recognize(self, image: np.ndarray):
@@ -117,7 +121,7 @@ class GestureRecognizer:
         Custom serialization and deserialization is necessary as mediapipe instance cannot be picled.
         :param path: File path under which GestureRecognizer instance is expected to be stored.
         """
-        with open(path, 'w+b') as f:
+        with open(path, "w+b") as f:
             pickle.dump(
                 obj=(self.classifier, self.preprocessor, self.cache, self.hands),
                 file=f,
@@ -130,6 +134,6 @@ class GestureRecognizer:
         :param path: File path where GestureRecognizer binary is stored.
         :return: GestureRecognizer instance.
         """
-        with open(path, 'rb') as f:
+        with open(path, "rb") as f:
             classifier, preprocessor, cache, hands = pickle.load(f)
             return cls(classifier, preprocessor, cache, hands)
