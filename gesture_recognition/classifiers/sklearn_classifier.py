@@ -36,5 +36,5 @@ class SklearnClassifier(TrainableClassifier):
             return self.sklearn_model.predict_proba(samples)
         except AttributeError:
             raise TrainableClassifier.Error(
-                "Provided classifier incapable of inferring classes probabilities."
+                "Provided classifier incapable of inferring classes probabilities.",
             )
