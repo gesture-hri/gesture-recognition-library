@@ -36,9 +36,10 @@ if __name__ == "__main__":
     )
     preprocessor = DefaultPreprocessor()
     cache = PickleCache("../pickle_cache_dir")
+    categories = ['rock', 'paper', 'scissors']
     gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache)
     score = gesture_recognizer.train_end_evaluate(
-        "rock_paper_scissors", samples, labels
+        "rock_paper_scissors", samples, labels, categories
     )
-
+    gesture_recognizer.to_pickle_binary('../pretrained_recognizers/rock_paper_scissors.pkl')
     logger.info(f"Extra trees classifier scored {score} on rock-paper-scissors dataset")
