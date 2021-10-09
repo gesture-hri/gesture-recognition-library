@@ -5,6 +5,7 @@ class Preprocessor(ABC):
     """
     All preprocessors used by GestureRecognizer must override this class by implementing methods below
     """
+
     @abstractmethod
     def normalize(self, *args, **kwargs):
         """

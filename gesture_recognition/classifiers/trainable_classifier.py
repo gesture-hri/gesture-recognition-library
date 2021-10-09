@@ -6,10 +6,12 @@ class TrainableClassifier(ABC):
     """
     All classifiers used on top of mediapipe must override this class by implementing abstract methods below
     """
+
     class Error(Exception):
         """
         Base class for related classifier errors and exceptions.
         """
+
         pass
 
     @abstractmethod

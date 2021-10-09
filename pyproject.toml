@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "gesture-recognition"
+version = "0.0.1"
+description = "Python library that provides rich yet highly customizable interface for training and evaluation of gesture image classifiers on any dataset."
+authors = ["Kacper Karon <karonkacper@gmail.com>", "Maciej Tratnowiecki <mtratnowiecki@gmail.com>", "Marcin Wasowicz <marcinkwasowicz@gmail.com>"]
+packages = [{ include = "gesture_recognition" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+tensorflow = "^2.6.0"
+keras = "^2.6.0"
+mediapipe = "^0.8.7"
+opencv-python = "^4.5.2"
+sklearn = "^0.0"
+numpy = "^1.12.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+black = "21.6b0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
