@@ -1,3 +1,5 @@
+import queue
+from queue import Queue
 from threading import Thread
 from typing import Iterator, Union, Tuple
 
@@ -10,39 +12,40 @@ class FrameSource(Iterator):
     This class is and adapter for reading video file/webcam input and providing it to gesture recognizer
     during video analysis and debugging.
     """
-    def __init__(self, video_path: Union[str, int], flush=False):
+    def __init__(self, video_path: Union[str, int] = 0, flush=False):
         """
         :param video_path: Path to .mp4 file or system webcam index
         :param flush: Setting this parameter launches daemonic thread constantly flushing webcam buffer
         so that every __next__() call results in the latest frame available. Use it only if __next__ calls
         happen irregularly or frame processing is slow.
         """
-        self.video_path = video_path
-        self.capture: cv2.VideoCapture = None
-        self.flusher: Thread = None
+        self.capture = cv2.VideoCapture(video_path)
         self.flush = flush
-        self.fps = 0.0
+        self.fps = self.capture.get(cv2.CAP_PROP_FPS)
         self.counter = 0
 
-        if self.flush:
-            self.flusher = Thread(target=self._flush, daemon=True)
+        self.buffer = Queue(1)
+        self.getter = Thread(target=self._read_buffer, daemon=True)
 
     def __iter__(self):
-        self.capture = cv2.VideoCapture(self.video_path)
-        self.fps = self.capture.get(cv2.CAP_PROP_FPS)
-        if self.flush:
-            self.flusher.start()
+        self.getter.start()
         return self
 
     def __next__(self) -> Tuple[int, float, np.ndarray]:
-        available, frame = self.capture.read()
+        available, counter, frame = self.buffer.get()
         if not available:
-            self.flush = False
             self.capture.release()
             raise StopIteration
-        self.counter += 1
         return self.counter, self.fps, frame
 
-    def _flush(self):
-        while self.flush:
-            self.capture.grab()
+    def _read_buffer(self):
+        while True:
+            available, frame = self.capture.read()
+            self.counter += 1
+            try:
+                self.buffer.put(block=not self.flush, item=(available, self.counter, frame))
+            except queue.Full:
+                self.buffer.get()
+                self.buffer.put(item=(available, self.counter, frame))
+            if not available:
+                break
