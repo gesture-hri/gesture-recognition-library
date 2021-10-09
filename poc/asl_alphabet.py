@@ -37,11 +37,14 @@ if __name__ == "__main__":
     )
     preprocessor = DefaultPreprocessor()
     cache = PickleCache("../pickle_cache_dir")
+    categories = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
     gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache, hands=True)
     score = gesture_recognizer.train_end_evaluate(
         identifier="asl_alphabet",
         samples=samples,
         labels=labels,
+        categories=categories,
     )
+    gesture_recognizer.to_pickle_binary('../pretrained_recognizers/asl_alphabet.pkl')
 
     logger.info(f"Extra trees classifier scored {score} on ASL alphabet dataset")
