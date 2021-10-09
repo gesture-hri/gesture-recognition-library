@@ -12,7 +12,7 @@ Once `asdf` is installed you can install the needed plugins with:
 ```shell
 asdf plugin-add python
 ```
-Then you can install the required versions of Erlang and Elixir with: 
+Then you can install the required version of Python with: 
 ```shell
 asdf install
 ```
