@@ -14,8 +14,6 @@ logger = logging.getLogger("gesture recognizer")
 
 # TODO: Add .from_config file method.
 class GestureRecognizer:
-    categories: List[any]
-
     def __init__(
         self,
         classifier: TrainableClassifier,
@@ -34,6 +32,7 @@ class GestureRecognizer:
         self.classifier = classifier
         self.preprocessor = preprocessor
         self.cache = cache
+        self.categories = None
 
         if self.hands:
             # TODO: what about two-handed gestures in the same dataset with single-handed?
@@ -108,7 +107,11 @@ class GestureRecognizer:
         :param image: Image with gesture to be recognized.
         :return: Detected gesture label index or corresponding object from categories (if is not None)
         """
-        preprocessed = self._image_flow(image)
+        mediapipe_output = self._image_flow(image)
+        if mediapipe_output is None:
+            return mediapipe_output
+
+        preprocessed = [self.preprocessor.preprocess(mediapipe_output)]
         classification = self.classifier.infer(preprocessed)
 
         if self.categories:
@@ -123,7 +126,7 @@ class GestureRecognizer:
         """
         with open(path, "w+b") as f:
             pickle.dump(
-                obj=(self.classifier, self.preprocessor, self.cache, self.hands),
+                obj=(self.classifier, self.preprocessor, self.categories, self.cache, self.hands),
                 file=f,
             )
 
@@ -135,5 +138,7 @@ class GestureRecognizer:
         :return: GestureRecognizer instance.
         """
         with open(path, "rb") as f:
-            classifier, preprocessor, cache, hands = pickle.load(f)
-            return cls(classifier, preprocessor, cache, hands)
+            classifier, preprocessor, categories, cache, hands = pickle.load(f)
+            obj = cls(classifier, preprocessor, cache, hands)
+            obj.categories = categories
+            return obj
