@@ -9,8 +9,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("video file debugger")
 
 if __name__ == '__main__':
-    video_path = sys.argv[1] if sys.argv[1] != 'live' else 0
-    pretrained_recognizer = GestureRecognizer.from_pickle_binary(sys.argv[2])
+    video_path = sys.argv[1] if len(sys.argv) == 3 else 0
+    pretrained_recognizer = GestureRecognizer.from_pickle_binary(sys.argv[-1])
 
     source = FrameSource(video_path)
 
