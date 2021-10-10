@@ -2,6 +2,8 @@ import logging
 import sys
 import time
 
+import cv2
+
 from gesture_recognition.gesture_recognizer import GestureRecognizer
 from video_debugging import FrameSource
 
@@ -22,7 +24,14 @@ if __name__ == "__main__":
         seconds_passed = counter / fps
         video_time_stamp = time.strftime("%H:%M:%S", time.gmtime(seconds_passed))
 
+        if video_path != 0:
+            # there is not point to show frames during live video debugging.
+            cv2.imshow('capture', frame)
+            cv2.waitKey(0)
+
         if classification is not None:
             logger.info(
                 f"Recognized {classification[0]} at time {video_time_stamp}. Inference took {inference_time} seconds."
             )
+
+    cv2.destroyAllWindows()
