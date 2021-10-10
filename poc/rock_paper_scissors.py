@@ -8,7 +8,7 @@ from sklearn.utils import shuffle
 from gesture_recognition.classifiers import SklearnClassifier
 from gesture_recognition.gesture_recognizer import GestureRecognizer
 from gesture_recognition.mediapipe_cache import PickleCache
-from gesture_recognition.preprocessors import DefaultPreprocessor
+from gesture_recognition.preprocessors import DistancePreprocessor
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("rock paper scissors pipeline")
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     classifier = SklearnClassifier(
         ExtraTreesClassifier(), random_state=random_state, test_size=0.2
     )
-    preprocessor = DefaultPreprocessor()
+    preprocessor = DistancePreprocessor(DistancePreprocessor.Metrics.L2)
     cache = PickleCache("../pickle_cache_dir")
     categories = ["rock", "paper", "scissors"]
     gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache)
