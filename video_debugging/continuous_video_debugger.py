@@ -24,5 +24,5 @@ if __name__ == "__main__":
 
         if classification is not None:
             logger.info(
-                f"Recognized {classification[0]} at time {video_time_stamp}. Inference took {inference_time}."
+                f"Recognized {classification[0]} at time {video_time_stamp}. Inference took {inference_time} seconds."
             )
