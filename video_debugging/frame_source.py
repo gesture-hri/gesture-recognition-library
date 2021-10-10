@@ -20,18 +20,22 @@ class FrameSource(Iterator):
         happen irregularly or frame processing is slow.
         """
         self.capture = cv2.VideoCapture(video_path)
-        self.flush = flush
         self.fps = self.capture.get(cv2.CAP_PROP_FPS)
+
+        self.block_buffer_reader = not flush
         self.counter = 0
 
         self.buffer = Queue(1)
-        self.getter = Thread(target=self._read_buffer, daemon=True)
+        self.buffer_reader = Thread(target=self._read_buffer, daemon=True)
 
     def __iter__(self):
-        self.getter.start()
+        self.buffer_reader.start()
         return self
 
     def __next__(self) -> Tuple[int, float, np.ndarray]:
+        """
+        :return: Tuple of number of frames already read, video source FPS property, frame in numpy array format
+        """
         available, counter, frame = self.buffer.get()
         if not available:
             self.capture.release()
@@ -43,7 +47,7 @@ class FrameSource(Iterator):
             available, frame = self.capture.read()
             self.counter += 1
             try:
-                self.buffer.put(block=not self.flush, item=(available, self.counter, frame))
+                self.buffer.put(block=self.block_buffer_reader, item=(available, self.counter, frame))
             except queue.Full:
                 self.buffer.get()
                 self.buffer.put(item=(available, self.counter, frame))
