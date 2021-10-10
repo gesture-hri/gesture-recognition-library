@@ -43,6 +43,9 @@ class FrameSource(Iterator):
             raise StopIteration
         return self.counter, self.fps, frame
 
+    def __del__(self):
+        self.capture.release()
+
     def _read_buffer(self):
         while True:
             available, frame = self.capture.read()
