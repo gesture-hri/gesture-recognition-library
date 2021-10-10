@@ -8,8 +8,8 @@ from gesture_recognition.preprocessors.preprocessor import Preprocessor
 
 class DistancePreprocessor(Preprocessor):
     """
-    Distance preprocessor extracts 3D coordinates from joint landmarks, calculates norm of euclidean distance
-    between each pair of landmarks and flattens the output.
+    Distance preprocessor extracts 3D coordinates from joint landmarks, calculates norm of metrics provided in
+    constructor between each pair of landmarks and flattens the output.
     """
     class Metrics(Enum):
         """
