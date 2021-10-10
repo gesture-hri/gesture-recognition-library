@@ -15,7 +15,7 @@ class FrameSource(Iterator):
     def __init__(self, video_path: Union[str, int] = 0, flush=False):
         """
         :param video_path: Path to .mp4 file or system webcam index
-        :param flush: Setting this parameter launches daemonic thread constantly flushing webcam buffer
+        :param flush: Setting this parameter allows frame buffer reader thread to empty the buffer once it is full
         so that every __next__() call results in the latest frame available. Use it only if __next__ calls
         happen irregularly or frame processing is slow.
         """
