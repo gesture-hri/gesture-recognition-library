@@ -12,6 +12,7 @@ class FrameSource(Iterator):
     This class is and adapter for reading video file/webcam input and providing it to gesture recognizer
     during video analysis and debugging.
     """
+
     def __init__(self, video_path: Union[str, int] = 0, flush=False):
         """
         :param video_path: Path to .mp4 file or system webcam index
@@ -47,7 +48,10 @@ class FrameSource(Iterator):
             available, frame = self.capture.read()
             self.counter += 1
             try:
-                self.buffer.put(block=self.block_buffer_reader, item=(available, self.counter, frame))
+                self.buffer.put(
+                    block=self.block_buffer_reader,
+                    item=(available, self.counter, frame),
+                )
             except queue.Full:
                 self.buffer.get()
                 self.buffer.put(item=(available, self.counter, frame))

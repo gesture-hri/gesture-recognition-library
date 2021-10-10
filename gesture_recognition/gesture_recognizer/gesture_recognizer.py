@@ -128,7 +128,13 @@ class GestureRecognizer:
         """
         with open(path, "w+b") as f:
             pickle.dump(
-                obj=(self.classifier, self.preprocessor, self.categories, self.cache, self.hands),
+                obj=(
+                    self.classifier,
+                    self.preprocessor,
+                    self.categories,
+                    self.cache,
+                    self.hands,
+                ),
                 file=f,
             )
 
