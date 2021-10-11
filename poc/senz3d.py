@@ -37,14 +37,22 @@ if __name__ == "__main__":
     )
     preprocessor = DistancePreprocessor(DistancePreprocessor.Metrics.L2)
     cache = PickleCache("../pickle_cache_dir")
-    categories = sorted([
-        "five", "thumb", "small-finger", "two", "three", "palm", "fist", "hard-rock", "pointer", "four", "ok",
-    ])
+    categories = sorted(
+        [
+            "five",
+            "thumb",
+            "small-finger",
+            "two",
+            "three",
+            "palm",
+            "fist",
+            "hard-rock",
+            "pointer",
+            "four",
+            "ok",
+        ]
+    )
     gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache)
-    score = gesture_recognizer.train_end_evaluate(
-        "senz3d", samples, labels, categories
-    )
-    gesture_recognizer.to_pickle_binary(
-        "../pretrained_recognizers/senz3d.pkl"
-    )
+    score = gesture_recognizer.train_end_evaluate("senz3d", samples, labels, categories)
+    gesture_recognizer.to_pickle_binary("../pretrained_recognizers/senz3d.pkl")
     logger.info(f"Extra trees classifier scored {score} on senz3d dataset")
