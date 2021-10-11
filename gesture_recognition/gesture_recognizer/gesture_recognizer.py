@@ -58,7 +58,10 @@ class GestureRecognizer:
         normalized = self.preprocessor.normalize(image, video_mode)
 
         if self.hands:
-            return self.mediapipe_handle.process(normalized).multi_hand_landmarks
+            try:
+                return self.mediapipe_handle.process(normalized).multi_hand_landmarks
+            except TypeError:
+                raise TypeError("Mediapipe expects 3D np.ndarray of np.unit8")
 
         pose_mediapipe_output = self.mediapipe_handle.process(normalized).pose_landmarks
         if pose_mediapipe_output is not None:
