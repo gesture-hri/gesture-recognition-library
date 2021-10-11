@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
         if video_path != 0:
             # there is not point to show frames during live video debugging.
-            cv2.imshow('capture', frame)
+            cv2.imshow("capture", frame)
             cv2.waitKey(0)
 
         if classification is not None:
