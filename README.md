@@ -74,3 +74,17 @@ Two examples similar to the one above are provided in poc package, which is a pa
 itself. Examples include GestureRecognizer usage on rock-paper-scissors and ASL alphabet datasets. 
 
 For more detailed information on available classes, their methods and attributes refer to appropriate class docstring.
+
+### Test Trained Gesture Recognizer With Video Inference
+Although the main objective ot this library is to simplify and automate gesture classifiers training, 
+`video_debugging` package contains script, `continuous_video_debugger.py` that allows to test 
+trained GestureRecognizer instance in real life like scenario. The script can be used on both video (.mp4) file:
+```shell
+python continuous_video_debugger.py /path/to/.mp4/file /path/to/trained/recognizer/save/file
+```
+and live webcam feed:
+```shell
+python continuous_video_debugger.py /path/to/trained/recognizer/save/file
+```
+In both cases frame timestamp, classification result and inference are logged for each frame mediapipe successfully 
+detects human posture.
