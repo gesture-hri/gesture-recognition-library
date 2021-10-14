@@ -63,15 +63,20 @@ from gesture_recognition.mediapipe_cache import PickleCache
 from gesture_recognition.preprocessors import DefaultPreprocessor
 
 
-classifier = SklearnClassifier(RandomForestClassifier(), test_size=0.2)
+classifier = SklearnClassifier(ExtraTreesClassifier(), test_size=0.2)
 preprocessor = DefaultPreprocessor()
 cache = PickleCache('path/to/mediapipe/output')
 
 gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache, hands=True)
 gesture_recognizer.train_and_evaluate(dataset_identifier: str, samples: Iterable[np.ndarray], labels: Iterable[np.int])
 ```
-Two examples similar to the one above are provided in poc package, which is a part of this repository, but not a library
-itself. Examples include GestureRecognizer usage on rock-paper-scissors and ASL alphabet datasets. 
+
+Example above comes from `train_recognizer.py` script from `poc` package. The script can be used train, evaluate and save 
+GestureRecognizer instance on any dataset. Dataset should consist of folders named after each gesture to be recognized
+containing image files (.jpg, .jpeg, .png formats) that belong to the same gesture label. Example of usage:
+```shell
+python train_recognizer.py <dataset_name> path/to/dataset path/to/cache/directory path/to/recognizer/binary/destination
+```
 
 For more detailed information on available classes, their methods and attributes refer to appropriate class docstring.
 
@@ -80,11 +85,11 @@ Although the main objective ot this library is to simplify and automate gesture 
 `video_debugging` package contains script, `continuous_video_debugger.py` that allows to test 
 trained GestureRecognizer instance in real life like scenario. The script can be used on both video (.mp4) file:
 ```shell
-python continuous_video_debugger.py /path/to/.mp4/file /path/to/trained/recognizer/save/file
+python continuous_video_debugger.py path/to/.mp4/file path/to/trained/recognizer/save/file
 ```
 and live webcam feed:
 ```shell
-python continuous_video_debugger.py /path/to/trained/recognizer/save/file
+python continuous_video_debugger.py path/to/trained/recognizer/save/file
 ```
 In both cases frame timestamp, classification result and inference are logged for each frame mediapipe successfully 
 detects human posture.
