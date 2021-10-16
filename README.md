@@ -73,7 +73,10 @@ gesture_recognizer.train_and_evaluate(dataset_identifier: str, samples: Iterable
 
 Example above comes from `train_recognizer.py` script from `poc` package. The script can be used train, evaluate and save 
 GestureRecognizer instance on any dataset. Dataset should consist of folders named after each gesture to be recognized
-containing image files (.jpg, .jpeg, .png formats) that belong to the same gesture label. Example of usage:
+containing image files (.jpg, .jpeg, .png formats) that belong to the same gesture label. At this point is has to be stated
+that mediapipe expects RGB images. Violation to this assumption might result in poor classification accuracy,
+so make sure that source of your images follows RGB format.
+Example of usage:
 ```shell
 python train_recognizer.py <dataset_name> path/to/dataset path/to/cache/directory path/to/recognizer/binary/destination
 ```
@@ -92,4 +95,5 @@ and live webcam feed:
 python continuous_video_debugger.py path/to/trained/recognizer/save/file
 ```
 In both cases frame timestamp, classification result and inference are logged for each frame mediapipe successfully 
-detects human posture.
+detects human posture. Conversion from BGR format used by opencv to RGB expected by mediapipe is handled automatically
+if running inference on live webcam feed.
