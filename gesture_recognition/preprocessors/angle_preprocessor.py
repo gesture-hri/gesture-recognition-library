@@ -10,9 +10,6 @@ class AnglePreprocessor(Preprocessor):
     between each pair of landmarks and flattens the output.
     """
 
-    def normalize(self, image, *args, **kwargs):
-        return image
-
     def preprocess(self, mediapipe_output, *args, **kwargs):
         landmarks = np.array(
             [

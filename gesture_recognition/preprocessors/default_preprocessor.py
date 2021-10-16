@@ -10,9 +10,6 @@ class DefaultPreprocessor(Preprocessor):
     and flattens resulting array.
     """
 
-    def normalize(self, image, *args, **kwargs):
-        return image
-
     def preprocess(self, mediapipe_output, *args, **kwargs):
         landmarks = np.array(
             [
