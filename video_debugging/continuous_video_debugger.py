@@ -19,7 +19,9 @@ if __name__ == "__main__":
     for counter, fps, frame in source:
         start_inference = time.time()
         # Opencv grabs webcam feed in BGR format.
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) if video_path == 0 else frame
+        if video_path == 0:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
         classification = pretrained_recognizer.recognize(frame)
         inference_time = time.time() - start_inference
 
