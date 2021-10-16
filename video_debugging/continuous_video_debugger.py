@@ -14,11 +14,15 @@ if __name__ == "__main__":
     video_path = sys.argv[1] if len(sys.argv) == 3 else 0
     pretrained_recognizer = GestureRecognizer.from_pickle_binary(sys.argv[-1])
 
-    source = FrameSource(video_path)
+    source = FrameSource(video_path, True)
 
     for counter, fps, frame in source:
         start_inference = time.time()
-        classification = pretrained_recognizer.recognize(frame, video_mode=True)
+        # Opencv grabs webcam feed in BGR format.
+        if video_path == 0:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        classification = pretrained_recognizer.recognize(frame)
         inference_time = time.time() - start_inference
 
         seconds_passed = counter / fps

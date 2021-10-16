@@ -48,14 +48,13 @@ class GestureRecognizer:
         if self.cache is not None:
             self.cache.initialize()
 
-    def _image_flow(self, image: np.ndarray, video_mode=False):
+    def _image_flow(self, image: np.ndarray):
         """
         Performs normalization and mediapipe processing on raw image before it is fed into classifier.
         :param image: Image to perform operations on.
-        :param video_mode: Specifies whether image comes from photo file or video stream.
         :return: Data format that can be accepted by preprocessor.
         """
-        normalized = self.preprocessor.normalize(image, video_mode)
+        normalized = self.preprocessor.normalize(image)
 
         if self.hands:
             try:
@@ -105,14 +104,13 @@ class GestureRecognizer:
         logger.info(f"Using {len(x)} samples for training and evaluation")
         return self.classifier.train(x, y)
 
-    def recognize(self, image: np.ndarray, video_mode=False):
+    def recognize(self, image: np.ndarray):
         """
         Recognizes gesture present on image.
         :param image: Image with gesture to be recognized.
-        :param video_mode: Specifies whether image comes from photo file or video stream.
         :return: Detected gesture label index or corresponding object from categories (if is not None)
         """
-        mediapipe_output = self._image_flow(image, video_mode)
+        mediapipe_output = self._image_flow(image)
         if mediapipe_output is None:
             return mediapipe_output
 
