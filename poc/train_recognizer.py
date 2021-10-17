@@ -7,7 +7,7 @@ from PIL import Image
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.utils import shuffle
 
-from gesture_recognition.classifiers import SklearnClassifier
+from gesture_recognition.classifiers import *
 from gesture_recognition.gesture_recognizer import GestureRecognizer
 from gesture_recognition.mediapipe_cache import PickleCache
 from gesture_recognition.preprocessors import *
