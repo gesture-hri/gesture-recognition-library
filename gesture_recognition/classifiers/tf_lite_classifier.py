@@ -48,6 +48,11 @@ class TFLiteClassifier(TrainableClassifier):
         self.setup_interpreter_meta()
 
     def train(self, samples, labels, *args, **kwargs):
+        if self.keras_model is None or self.training_params is None:
+            raise AttributeError(
+                "TFLiteClassifier instances that were not instantiated via constructor cannot be trained."
+            )
+
         x_train, x_test, y_train, y_test = train_test_split(
             samples,
             labels,
