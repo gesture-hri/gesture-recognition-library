@@ -31,13 +31,7 @@ class TFLiteClassifier(TrainableClassifier):
         self.input_meta = None
         self.output_meta = None
 
-    def setup_interpreter(self):
-        self.tf_lite_model = tensorflow.lite.TFLiteConverter.from_keras_model(
-            self.keras_model
-        ).convert()
-        self.tf_lite_interpreter = tensorflow.lite.Interpreter(
-            model_content=self.tf_lite_model
-        )
+    def setup_interpreter_meta(self):
         self.input_meta = [
             (meta["index"], meta["shape"], meta["dtype"])
             for meta in self.tf_lite_interpreter.get_input_details()
@@ -61,7 +55,14 @@ class TFLiteClassifier(TrainableClassifier):
             np.array(x_test), np.array(y_test), verbose=0
         )
 
-        self.setup_interpreter()
+        self.tf_lite_model = tensorflow.lite.TFLiteConverter.from_keras_model(
+            self.keras_model
+        ).convert()
+        self.tf_lite_interpreter = tensorflow.lite.Interpreter(
+            model_content=self.tf_lite_model
+        )
+
+        self.setup_interpreter_meta()
         return score
 
     def evaluate(self, samples, labels, *args, **kwargs):
