@@ -1,2 +1,3 @@
-from gesture_recognition.classifiers.trainable_classifier import TrainableClassifier
 from gesture_recognition.classifiers.sklearn_classifier import SklearnClassifier
+from gesture_recognition.classifiers.tf_lite_classifier import TFLiteClassifier
+from gesture_recognition.classifiers.trainable_classifier import TrainableClassifier
