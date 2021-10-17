@@ -41,6 +41,12 @@ class TFLiteClassifier(TrainableClassifier):
             for meta in self.tf_lite_interpreter.get_output_details()
         ]
 
+    def setup_interpreter_from_path(self, tf_lite_model_path):
+        self.tf_lite_interpreter = tensorflow.lite.Interpreter(
+            model_path=tf_lite_model_path
+        )
+        self.setup_interpreter_meta()
+
     def train(self, samples, labels, *args, **kwargs):
         x_train, x_test, y_train, y_test = train_test_split(
             samples,
@@ -49,15 +55,18 @@ class TFLiteClassifier(TrainableClassifier):
             random_state=self.random_state,
         )
         self.keras_model.fit(
-            np.array(x_train), np.array(y_train), **self.training_params
+            np.array(x_train).astype(np.float32),
+            np.array(y_train),
+            **self.training_params,
         )
         _, score = self.keras_model.evaluate(
-            np.array(x_test), np.array(y_test), verbose=0
+            np.array(x_test).astype(np.float32), np.array(y_test), verbose=0
         )
 
         self.tf_lite_model = tensorflow.lite.TFLiteConverter.from_keras_model(
             self.keras_model
         ).convert()
+
         self.tf_lite_interpreter = tensorflow.lite.Interpreter(
             model_content=self.tf_lite_model
         )
@@ -83,9 +92,12 @@ class TFLiteClassifier(TrainableClassifier):
                 )
 
             if meta[2] != tensor.dtype:
-                raise ValueError(
-                    f"Type mismatch for input {meta[0]}. {meta[2]} expected but {tensor.dtype} given."
-                )
+                try:
+                    tensor = tensor.astype(meta[2])
+                except Exception:
+                    raise ValueError(
+                        f"Couldn't convert type {tensor.dtype} to {meta[2]} which is required by classifier."
+                    )
 
             self.tf_lite_interpreter.set_tensor(meta[0], [tensor])
 
