@@ -44,7 +44,9 @@ class TFLiteClassifier(TrainableClassifier):
     @classmethod
     def from_tf_lite_model_path(cls, tf_lite_model_path):
         instance = cls(None, None)
-        instance.tf_lite_interpreter = tensorflow.lite.Interpreter(model_path=tf_lite_model_path)
+        instance.tf_lite_interpreter = tensorflow.lite.Interpreter(
+            model_path=tf_lite_model_path
+        )
         instance.setup_interpreter_meta()
         return instance
 
@@ -123,6 +125,5 @@ class TFLiteClassifier(TrainableClassifier):
         ]
 
     def save_classifier(self, path: str):
-        with open(path, 'w+b') as classifier_binary:
+        with open(path, "w+b") as classifier_binary:
             classifier_binary.write(self.tf_lite_model)
-

@@ -24,12 +24,16 @@ if __name__ == "__main__":
         classifier=classifier,
         preprocessor=DefaultPreprocessor(),
     )
-    pretrained_recognizer.categories = [path.name for path in os.scandir('../data/rock_paper_scissors')]
+    pretrained_recognizer.categories = [
+        path.name for path in os.scandir("../data/rock_paper_scissors")
+    ]
     source = FrameSource(video_path)
 
     for counter, fps, frame in source:
         start_inference = time.time()
-        classification = pretrained_recognizer.recognize(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        classification = pretrained_recognizer.recognize(
+            cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        )
         inference_time = time.time() - start_inference
 
         seconds_passed = counter / fps

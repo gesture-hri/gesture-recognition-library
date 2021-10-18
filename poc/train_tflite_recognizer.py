@@ -53,22 +53,24 @@ if __name__ == "__main__":
         for _file in shuffle(gesture, random_state=random_state)
     )
 
-    keras_model = tensorflow.keras.Sequential([
-        tensorflow.keras.layers.Dense(128, activation='relu'),
-        tensorflow.keras.layers.Dense(len(paths), activation='softmax'),
-    ])
+    keras_model = tensorflow.keras.Sequential(
+        [
+            tensorflow.keras.layers.Dense(128, activation="relu"),
+            tensorflow.keras.layers.Dense(len(paths), activation="softmax"),
+        ]
+    )
     keras_model.compile(
         optimizer=tensorflow.keras.optimizers.Adam(learning_rate=0.001),
-        metrics=['acc'],
-        loss='sparse_categorical_crossentropy',
+        metrics=["acc"],
+        loss="sparse_categorical_crossentropy",
     )
     classifier = TFLiteClassifier(
         keras_model=keras_model,
         test_size=0.2,
         random_state=random_state,
         keras_training_params={
-            'epochs': 10,
-            'verbose': 0,
+            "epochs": 10,
+            "verbose": 0,
         },
     )
     preprocessor = DefaultPreprocessor()

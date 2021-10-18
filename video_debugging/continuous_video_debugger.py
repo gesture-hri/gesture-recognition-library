@@ -18,7 +18,9 @@ if __name__ == "__main__":
 
     for counter, fps, frame in source:
         start_inference = time.time()
-        classification = pretrained_recognizer.recognize(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        classification = pretrained_recognizer.recognize(
+            cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        )
         inference_time = time.time() - start_inference
 
         seconds_passed = counter / fps
