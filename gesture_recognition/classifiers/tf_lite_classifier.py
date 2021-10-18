@@ -41,11 +41,12 @@ class TFLiteClassifier(TrainableClassifier):
             for meta in self.tf_lite_interpreter.get_output_details()
         ]
 
-    def setup_interpreter_from_path(self, tf_lite_model_path):
-        self.tf_lite_interpreter = tensorflow.lite.Interpreter(
-            model_path=tf_lite_model_path
-        )
-        self.setup_interpreter_meta()
+    @classmethod
+    def from_tf_lite_model_path(cls, tf_lite_model_path):
+        instance = cls(None, None)
+        instance.tf_lite_interpreter = tensorflow.lite.Interpreter(model_path=tf_lite_model_path)
+        instance.setup_interpreter_meta()
+        return instance
 
     def train(self, samples, labels, *args, **kwargs):
         if self.keras_model is None or self.training_params is None:
@@ -120,3 +121,8 @@ class TFLiteClassifier(TrainableClassifier):
         return [
             self.tf_lite_interpreter.get_tensor(meta[0])[0] for meta in self.output_meta
         ]
+
+    def save_classifier(self, path: str):
+        with open(path, 'w+b') as classifier_binary:
+            classifier_binary.write(self.tf_lite_model)
+
