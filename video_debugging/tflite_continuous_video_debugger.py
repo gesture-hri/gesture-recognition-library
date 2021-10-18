@@ -1,5 +1,4 @@
 import logging
-import os
 import sys
 import time
 
@@ -24,9 +23,6 @@ if __name__ == "__main__":
         classifier=classifier,
         preprocessor=DefaultPreprocessor(),
     )
-    pretrained_recognizer.categories = [
-        path.name for path in os.scandir("../data/rock_paper_scissors")
-    ]
     source = FrameSource(video_path)
 
     for counter, fps, frame in source:
