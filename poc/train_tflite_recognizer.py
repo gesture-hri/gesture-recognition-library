@@ -15,6 +15,10 @@ from gesture_recognition.preprocessors import *
 logging.basicConfig(level=logging.INFO)
 
 if __name__ == "__main__":
+    """
+    This script serves experimental purposes only, until common serialization for all TrainableClassifier derived classes
+    is established
+    """
     try:
         (
             _script,
