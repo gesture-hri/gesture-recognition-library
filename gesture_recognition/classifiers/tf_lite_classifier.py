@@ -1,5 +1,4 @@
 import numpy as np
-import tensorflow
 from sklearn.model_selection import train_test_split
 
 from gesture_recognition.classifiers.trainable_classifier import TrainableClassifier
@@ -8,7 +7,7 @@ from gesture_recognition.classifiers.trainable_classifier import TrainableClassi
 class TFLiteClassifier(TrainableClassifier):
     def __init__(
         self,
-        keras_model: tensorflow.keras.Model,
+        keras_model,
         keras_training_params,
         test_size=None,
         random_state=None,
@@ -43,10 +42,10 @@ class TFLiteClassifier(TrainableClassifier):
 
     @classmethod
     def from_tf_lite_model_path(cls, tf_lite_model_path):
+        from tflite_runtime.interpreter import Interpreter
+
         instance = cls(None, None)
-        instance.tf_lite_interpreter = tensorflow.lite.Interpreter(
-            model_path=tf_lite_model_path
-        )
+        instance.tf_lite_interpreter = Interpreter(model_path=tf_lite_model_path)
         instance.setup_interpreter_meta()
         return instance
 
@@ -55,6 +54,7 @@ class TFLiteClassifier(TrainableClassifier):
             raise AttributeError(
                 "TFLiteClassifier instances that were not instantiated via constructor cannot be trained."
             )
+        import tensorflow
 
         x_train, x_test, y_train, y_test = train_test_split(
             samples,
