@@ -68,6 +68,7 @@ if __name__ == "__main__":
     keras_model = tf.keras.Sequential(
         [
             tf.keras.layers.Dense(128, activation="relu"),
+            tf.keras.layers.Flatten(),
             tf.keras.layers.Dense(len(paths), activation="softmax"),
         ]
     )
