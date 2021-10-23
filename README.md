@@ -57,10 +57,10 @@ Example usage might look like this:
 ```shell
 from sklearn.ensemble import RandomForestClassifier
 
-from gesture_recognition.classifiers import SklearnClassifier
+from gesture_recognition.classifiers import *
 from gesture_recognition.gesture_recognizer import GestureRecognizer
 from gesture_recognition.mediapipe_cache import PickleCache
-from gesture_recognition.preprocessors import DefaultPreprocessor
+from gesture_recognition.preprocessors import *
 
 
 classifier = SklearnClassifier(ExtraTreesClassifier(), test_size=0.2)
@@ -71,7 +71,7 @@ gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache, hands=Tr
 gesture_recognizer.train_and_evaluate(dataset_identifier: str, samples: Iterable[np.ndarray], labels: Iterable[np.int])
 ```
 
-Example above comes from `train_recognizer.py` script from `poc` package. The script can be used train, evaluate and save 
+Example above resembles `train_recognizer.py` script from `poc` package. The script can be used train, evaluate and save 
 GestureRecognizer instance on any dataset. Dataset should consist of folders named after each gesture to be recognized
 containing image files (.jpg, .jpeg, .png formats) that belong to the same gesture label. At this point is has to be stated
 that mediapipe expects RGB images. Violation to this assumption might result in poor classification accuracy,
