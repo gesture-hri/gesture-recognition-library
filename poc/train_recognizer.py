@@ -3,8 +3,8 @@ import os
 import sys
 
 import numpy as np
+import tensorflow as tf
 from PIL import Image
-from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.utils import shuffle
 
 from gesture_recognition.classifiers import *
@@ -25,7 +25,7 @@ if __name__ == "__main__":
         into directories based on gesture they represent. Directory for each gesture should be named by the gesture it
         represents
         :param cache_path: path (absolut or relative) to directory where mediapipe output on dataset will be cached
-        :param recognizer_binary_path: path (absolute or relative) under which serialized GestureRecognizer instance
+        :param classifier_binary_path: path (absolute or relative) under which serialized classifier instance
         will be stored
     Library developers are encouraged to experiment with classifier and preprocessor variables to find optimal
     combination, specific to dataset they are working with.
@@ -37,7 +37,7 @@ if __name__ == "__main__":
             dataset_name,
             dataset_path,
             cache_path,
-            recognizer_binary_path,
+            classifier_binary_path,
         ) = sys.argv
     except IndexError:
         raise ValueError("Invalid number of arguments")
@@ -65,19 +65,34 @@ if __name__ == "__main__":
         for _file in shuffle(gesture, random_state=random_state)
     )
 
-    classifier = SklearnClassifier(
-        ExtraTreesClassifier(),
-        random_state=random_state,
-        test_size=0.2,
+    keras_model = tf.keras.Sequential(
+        [
+            tf.keras.layers.Dense(128, activation="relu"),
+            tf.keras.layers.Dense(len(paths), activation="softmax"),
+        ]
     )
-    preprocessor = DistancePreprocessor(DistancePreprocessor.Metrics.L2)
+    keras_model.compile(
+        optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+        metrics=["acc"],
+        loss="sparse_categorical_crossentropy",
+    )
+    classifier = TFLiteClassifier(
+        keras_model=keras_model,
+        test_size=0.2,
+        random_state=random_state,
+        keras_training_params={
+            "epochs": 10,
+            "verbose": 0,
+        },
+    )
+    preprocessor = DefaultPreprocessor()
     cache = PickleCache(cache_path)
     categories = [gesture.name for gesture in os.scandir(dataset_path)]
 
-    gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache)
+    gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache, categories)
     score = gesture_recognizer.train_end_evaluate(
-        dataset_name, samples, labels, categories
+        dataset_name, samples, labels,
     )
-    gesture_recognizer.to_pickle_binary(recognizer_binary_path)
+    classifier.save_classifier(classifier_binary_path)
 
-    logger.info(f"Extra tree classifier scored {score} on {dataset_name} dataset")
+    logger.info(f"Keras classifier scored {score} on {dataset_name} dataset")
