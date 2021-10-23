@@ -91,7 +91,9 @@ if __name__ == "__main__":
 
     gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache, categories)
     score = gesture_recognizer.train_end_evaluate(
-        dataset_name, samples, labels,
+        dataset_name,
+        samples,
+        labels,
     )
     classifier.save_classifier(classifier_binary_path)
 

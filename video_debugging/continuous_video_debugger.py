@@ -19,7 +19,7 @@ if __name__ == "__main__":
         1) For library developers themselves to test its efficiency in real-time video inference conditions.
         2) For library users to be an example of how to use recognizer for real-time video inference.
     It expects the following arguments:
-        :param video_path: Optional. If provided inference will run on .mpr4 file stored under the path. If not 
+        :param video_path: Optional. If provided inference will run on .mpr4 file stored under the path. If not
         :param model_binary_path: Path to model binary that can be deserialized into classifier instance.
         :param dataset_path: Path to dataset that was used to train classifier. Its purpose is to provide named
         gesture labels for that recognizer will use for logging during inference.
