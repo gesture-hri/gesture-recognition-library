@@ -7,8 +7,8 @@ from gesture_recognition.classifiers.trainable_classifier import TrainableClassi
 class TFLiteClassifier(TrainableClassifier):
     def __init__(
         self,
-        keras_model,
-        keras_training_params,
+        keras_model=None,
+        keras_training_params=None,
         test_size=None,
         random_state=None,
     ):
@@ -41,10 +41,10 @@ class TFLiteClassifier(TrainableClassifier):
         ]
 
     @classmethod
-    def from_tf_lite_model_path(cls, tf_lite_model_path):
+    def from_file(cls, tf_lite_model_path):
         from tflite_runtime.interpreter import Interpreter
 
-        instance = cls(None, None)
+        instance = cls()
         instance.tf_lite_interpreter = Interpreter(model_path=tf_lite_model_path)
         instance.setup_interpreter_meta()
         return instance

@@ -34,7 +34,7 @@ if __name__ == "__main__":
     except IndexError:
         raise ValueError("Invalid number of arguments")
 
-    classifier = TFLiteClassifier.from_tf_lite_model_path(model_binary_path)
+    classifier = TFLiteClassifier.from_file(model_binary_path)
     categories = [path.name for path in os.scandir(dataset_path)]
 
     pretrained_recognizer = GestureRecognizer(
