@@ -1,5 +1,4 @@
 import logging
-import pickle
 from typing import List, Iterable
 
 import mediapipe
@@ -19,9 +18,11 @@ class GestureRecognizer:
         classifier: TrainableClassifier,
         preprocessor: Preprocessor,
         cache: MediapipeCache = None,
+        categories: List[any] = None,
         hands=True,
     ):
         """
+        :param categories: List of objects associated with gesture numeric label.
         :param classifier: Classifier that will be used on top of mediapipe output to classify gestures
         :param preprocessor: Object responsible for additional semantic preprocessing of mediapipe output before
         passing it to classifier.
@@ -32,7 +33,7 @@ class GestureRecognizer:
         self.classifier = classifier
         self.preprocessor = preprocessor
         self.cache = cache
-        self.categories = None
+        self.categories = categories
 
         if self.hands:
             # TODO: what about two-handed gestures in the same dataset with single-handed?
@@ -73,11 +74,9 @@ class GestureRecognizer:
         identifier: str = None,
         samples: Iterable[np.ndarray] = None,
         labels: Iterable[np.int] = None,
-        categories: List[any] = None,
     ):
         """
         Trains and evaluates top classifier.
-        :param categories: List of objects associated with gesture numeric label.
         :param samples: Raw images in numpy array format.
         :param labels: Categories corresponding to images from samples.
         :param identifier: Dataset name. Essential for cache framework.
@@ -85,8 +84,6 @@ class GestureRecognizer:
         """
         if identifier is None and self.cache is None:
             raise Exception("Unable to use dataset cache without identifier specified.")
-
-        self.categories = categories
 
         try:
             x, y = self.cache.retrieve_mediapipe_output(identifier)
@@ -120,34 +117,3 @@ class GestureRecognizer:
         if self.categories:
             return [self.categories[label] for label in classification]
         return classification
-
-    def to_pickle_binary(self, path):
-        """
-        Serializes GestureRecognizer to pickle binary format and saves under provided path.
-        Custom serialization and deserialization is necessary as mediapipe instance cannot be pickled.
-        :param path: File path under which GestureRecognizer instance is expected to be stored.
-        """
-        with open(path, "w+b") as f:
-            pickle.dump(
-                obj=(
-                    self.classifier,
-                    self.preprocessor,
-                    self.categories,
-                    self.cache,
-                    self.hands,
-                ),
-                file=f,
-            )
-
-    @classmethod
-    def from_pickle_binary(cls, path):
-        """
-        Deserializes and creates GestureRecognizer instance from pickle binary stored under provided path.
-        :param path: File path where GestureRecognizer binary is stored.
-        :return: GestureRecognizer instance.
-        """
-        with open(path, "rb") as f:
-            classifier, preprocessor, categories, cache, hands = pickle.load(f)
-            obj = cls(classifier, preprocessor, cache, hands)
-            obj.categories = categories
-            return obj

@@ -1,28 +1,54 @@
 import logging
+import os
 import sys
 import time
 
 import cv2
 
+from gesture_recognition.classifiers import TFLiteClassifier
 from gesture_recognition.gesture_recognizer import GestureRecognizer
+from gesture_recognition.preprocessors import *
 from video_debugging import FrameSource
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("video file debugger")
 
 if __name__ == "__main__":
-    video_path = sys.argv[1] if len(sys.argv) == 3 else 0
-    pretrained_recognizer = GestureRecognizer.from_pickle_binary(sys.argv[-1])
+    """
+    This script is intended to serve two purposes:
+        1) For library developers themselves to test its efficiency in real-time video inference conditions.
+        2) For library users to be an example of how to use recognizer for real-time video inference.
+    It expects the following arguments:
+        :param video_path: Optional. If provided inference will run on .mpr4 file stored under the path. If not
+        :param model_binary_path: Path to model binary that can be deserialized into classifier instance.
+        :param dataset_path: Path to dataset that was used to train classifier. Its purpose is to provide named
+        gesture labels for that recognizer will use for logging during inference.
+        specified inference will run on live webcam feed.
+    """
+    try:
+        if len(sys.argv) == 4:
+            (_script, video_path, model_binary_path, dataset_path) = sys.argv
+        else:
+            (_script, model_binary_path, dataset_path) = sys.argv
+            video_path = 0
+    except IndexError:
+        raise ValueError("Invalid number of arguments")
 
-    source = FrameSource(video_path, True)
+    classifier = TFLiteClassifier.from_file(model_binary_path)
+    categories = [path.name for path in os.scandir(dataset_path)]
+
+    pretrained_recognizer = GestureRecognizer(
+        classifier=classifier,
+        preprocessor=DefaultPreprocessor(),
+        categories=categories,
+    )
+    source = FrameSource(video_path)
 
     for counter, fps, frame in source:
         start_inference = time.time()
-        # Opencv grabs webcam feed in BGR format.
-        if video_path == 0:
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-        classification = pretrained_recognizer.recognize(frame)
+        classification = pretrained_recognizer.recognize(
+            cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        )
         inference_time = time.time() - start_inference
 
         seconds_passed = counter / fps

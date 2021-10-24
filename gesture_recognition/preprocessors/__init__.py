@@ -2,3 +2,4 @@ from gesture_recognition.preprocessors.angle_preprocessor import AnglePreprocess
 from gesture_recognition.preprocessors.default_preprocessor import DefaultPreprocessor
 from gesture_recognition.preprocessors.distance_preprocessor import DistancePreprocessor
 from gesture_recognition.preprocessors.preprocessor import Preprocessor
+from gesture_recognition.preprocessors.simple_preprocessor import SimplePreprocessor
