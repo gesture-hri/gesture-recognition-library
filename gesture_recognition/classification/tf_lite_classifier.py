@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-from gesture_recognition.classifiers.trainable_classifier import TrainableClassifier
+from gesture_recognition.classification.trainable_classifier import TrainableClassifier
 
 
 class TFLiteClassifier(TrainableClassifier):

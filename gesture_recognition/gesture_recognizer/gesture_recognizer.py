@@ -4,7 +4,7 @@ from typing import List, Iterable
 import mediapipe
 import numpy as np
 
-from gesture_recognition.classifiers import TrainableClassifier
+from gesture_recognition.classification import TrainableClassifier
 from gesture_recognition.mediapipe_cache import MediapipeCache
 from gesture_recognition.preprocessors import Preprocessor
 

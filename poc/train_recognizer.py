@@ -7,7 +7,7 @@ import tensorflow as tf
 from PIL import Image
 from sklearn.utils import shuffle
 
-from gesture_recognition.classifiers import *
+from gesture_recognition.classification import *
 from gesture_recognition.gesture_recognizer import GestureRecognizer
 from gesture_recognition.mediapipe_cache import PickleCache
 from gesture_recognition.preprocessors import *
