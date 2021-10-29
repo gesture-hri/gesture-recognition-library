@@ -5,7 +5,7 @@ import time
 
 import cv2
 
-from gesture_recognition.classifiers import TFLiteClassifier
+from gesture_recognition.classification import TFLiteClassifier
 from gesture_recognition.gesture_recognizer import GestureRecognizer
 from gesture_recognition.preprocessors import *
 from video_debugging import FrameSource
