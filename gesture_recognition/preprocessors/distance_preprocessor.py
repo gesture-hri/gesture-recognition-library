@@ -31,15 +31,7 @@ class DistancePreprocessor(Preprocessor):
 
         self.metrics = metrics
 
-    def preprocess(self, mediapipe_output, *args, **kwargs):
-        landmarks = np.array(
-            [
-                [landmark.x, landmark.y, landmark.z]
-                for landmarks in mediapipe_output
-                for landmark in landmarks.landmark
-            ],
-        )
-
+    def preprocess(self, landmarks, *args, **kwargs):
         return (
             StandardScaler()
             .fit_transform(
