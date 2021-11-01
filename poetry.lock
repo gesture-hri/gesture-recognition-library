@@ -312,7 +312,7 @@ python-dateutil = ">=2.7"
 
 [[package]]
 name = "mediapipe"
-version = "0.8.8"
+version = "0.8.8.1"
 description = "MediaPipe is the simplest way for researchers and developers to build world-class ML solutions and applications for mobile, edge, cloud and the web."
 category = "main"
 optional = false
@@ -1004,15 +1004,15 @@ matplotlib = [
     {file = "matplotlib-3.4.3.tar.gz", hash = "sha256:fc4f526dfdb31c9bd6b8ca06bf9fab663ca12f3ec9cdf4496fb44bc680140318"},
 ]
 mediapipe = [
-    {file = "mediapipe-0.8.8-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:c115be97b61f407b08bebd1808f96cf50bee4f6175fa2c96b2545972b2487d51"},
-    {file = "mediapipe-0.8.8-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:227eec64d0a653f0c2679cef6272c4a4b0d9305e8645fa9acc2d17d1b02bc0e1"},
-    {file = "mediapipe-0.8.8-cp37-cp37m-win_amd64.whl", hash = "sha256:2580422090bf681610443fccd09215a3a2c864be6c3f0652b05f7b2dfa76c7b5"},
-    {file = "mediapipe-0.8.8-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:40b65522a5cd5687dada8e924560fc828ed0bd736e4f5c78122fff5e296bb67b"},
-    {file = "mediapipe-0.8.8-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9578fe33e1c22292be1e0fe34d06d9f5aaad74532f8d8d5fa1b3d264aba16575"},
-    {file = "mediapipe-0.8.8-cp38-cp38-win_amd64.whl", hash = "sha256:eea0383fac9a4d2652d825658259600136fa40fdbdc68733f23578d4c71cb828"},
-    {file = "mediapipe-0.8.8-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:9f27aa312ac4c9435dd3337ec3a7225172b33c3f7ff4c7c7579cb5a3a000fdb1"},
-    {file = "mediapipe-0.8.8-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a96d43d3aceb1fc1e76624283b93c2fbc98af33d4771927153d866c328bc1597"},
-    {file = "mediapipe-0.8.8-cp39-cp39-win_amd64.whl", hash = "sha256:113d846c51b419c0403ed3101595280dd4698fc498fd32ff323ab317a2d967eb"},
+    {file = "mediapipe-0.8.8.1-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:8ed5156502213a9a0f83c83519507d0ebad4bcd1044afe2d9fc9617b5b2fb353"},
+    {file = "mediapipe-0.8.8.1-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:20715f68a7fa740aab499a771550846e2c0e8e585e0bf51428d12574feb1ccaa"},
+    {file = "mediapipe-0.8.8.1-cp37-cp37m-win_amd64.whl", hash = "sha256:684c80a90f394f80402716467d8127d88d2a079e5823df011e8ad57c9cc24b37"},
+    {file = "mediapipe-0.8.8.1-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:0a3489504ebc17183b810f9699ac85dbdaa13a7dad1a68569fa691585815969e"},
+    {file = "mediapipe-0.8.8.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:fe62eb37e5e94ff8a5cb2f2e19c586380bb641042c5f072591f6f56ea816105f"},
+    {file = "mediapipe-0.8.8.1-cp38-cp38-win_amd64.whl", hash = "sha256:370dde14db03737e350858a17d468aaa364a4a26020677feb05e6021c719ced2"},
+    {file = "mediapipe-0.8.8.1-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:3257c7202d3440aa066e1ebbc7c0c6f6c2c0e5e4b6efa832c59d3ba7c16af205"},
+    {file = "mediapipe-0.8.8.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a45ef71bc932bd00bd1d8b3ba7aaf9bf15307945410f754062ee80659e364db6"},
+    {file = "mediapipe-0.8.8.1-cp39-cp39-win_amd64.whl", hash = "sha256:9aa98933df7d1fcda83a2277e551da21937d7d60b2aa1af022ef80caeabe7c53"},
 ]
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
