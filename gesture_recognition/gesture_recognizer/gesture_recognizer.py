@@ -55,19 +55,37 @@ class GestureRecognizer:
         :param image: Image to perform operations on.
         :return: Data format that can be accepted by preprocessor.
         """
-        normalized = self.preprocessor.normalize(image)
 
-        if self.hands:
-            try:
-                return self.mediapipe_handle.process(normalized).multi_hand_landmarks
-            except TypeError:
-                raise TypeError("Mediapipe expects 3D np.ndarray of np.unit8")
+        try:
+            if self.hands:
+                mediapipe_output = self.mediapipe_handle.process(
+                    image
+                ).multi_hand_landmarks
+            else:
+                mediapipe_output = self.mediapipe_handle.process(image).pose_landmarks
+        except TypeError:
+            raise TypeError("Mediapipe expects 3D np.ndarray of np.unit8")
 
-        pose_mediapipe_output = self.mediapipe_handle.process(normalized).pose_landmarks
-        if pose_mediapipe_output is not None:
+        if mediapipe_output is not None:
             # In case of Pose solution only Single NormalizedLandmarkList object is returned.
             # self.preprocessor expects list of that
-            return [pose_mediapipe_output]
+            if self.hands:
+                landmarks = np.array(
+                    [
+                        [landmark.x, landmark.y, landmark.z]
+                        for landmarks in mediapipe_output
+                        for landmark in landmarks.landmark
+                    ],
+                )
+            else:
+                landmarks = np.array(
+                    [
+                        [landmark.x, landmark.y, landmark.z]
+                        for landmark in mediapipe_output.landmark
+                    ]
+                )
+            return landmarks
+        return mediapipe_output
 
     def train_end_evaluate(
         self,
@@ -107,11 +125,11 @@ class GestureRecognizer:
         :param image: Image with gesture to be recognized.
         :return: Detected gesture label index or corresponding object from categories (if is not None)
         """
-        mediapipe_output = self._image_flow(image)
-        if mediapipe_output is None:
-            return mediapipe_output
+        landmarks = self._image_flow(image)
+        if landmarks is None:
+            return landmarks
 
-        preprocessed = [self.preprocessor.preprocess(mediapipe_output)]
+        preprocessed = [self.preprocessor.preprocess(landmarks)]
         classification = self.classifier.infer(preprocessed)
 
         if self.categories:

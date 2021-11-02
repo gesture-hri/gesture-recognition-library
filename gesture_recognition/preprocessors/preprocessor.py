@@ -19,6 +19,7 @@ class Preprocessor(ABC):
     @abstractmethod
     def preprocess(self, *args, **kwargs):
         """
-        This method will be called on mediapipe output to perform additional semantic preprocessing.
+        This method will be called on numpy array that represent mediapipe output
+        to perform additional semantic preprocessing.
         """
         pass

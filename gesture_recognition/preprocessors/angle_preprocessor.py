@@ -10,14 +10,6 @@ class AnglePreprocessor(Preprocessor):
     between each pair of landmarks and flattens the output.
     """
 
-    def preprocess(self, mediapipe_output, *args, **kwargs):
-        landmarks = np.array(
-            [
-                [landmark.x, landmark.y, landmark.z]
-                for landmarks in mediapipe_output
-                for landmark in landmarks.landmark
-            ],
-        )
-
+    def preprocess(self, landmarks, *args, **kwargs):
         landmarks = landmarks / np.linalg.norm(landmarks, axis=1).reshape(-1, 1)
         return StandardScaler().fit_transform((landmarks @ landmarks.T)).reshape((-1,))
