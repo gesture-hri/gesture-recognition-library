@@ -76,14 +76,14 @@ class GestureRecognizer:
                         for landmarks in mediapipe_output
                         for landmark in landmarks.landmark
                     ],
-                )
+                ).astype(np.float32)
             else:
                 landmarks = np.array(
                     [
                         [landmark.x, landmark.y, landmark.z]
                         for landmark in mediapipe_output.landmark
                     ]
-                )
+                ).astype(np.float32)
             return landmarks
         return mediapipe_output
 

@@ -35,12 +35,11 @@ class TFLitePreprocessor(Preprocessor):
         )
 
     def preprocess(self, landmark_vector: np.ndarray, *args, **kwargs):
-        landmark_vector = landmark_vector.astype(self.input_meta[2])
         self.tf_lite_interpreter.allocate_tensors()
-        if np.any(landmark_vector.shape != self.input_meta[1]):
+        if np.any(landmark_vector.shape != self.input_meta[1]) or landmark_vector.dtype != self.input_meta[2]:
             raise ValueError(
-                "Preprocessor expects input vector of shape {}. Shape {} was provided".format(
-                    self.input_meta[1], landmark_vector.shape
+                "Preprocessor expects input vector of shape {} and type {}. Shape {} and type {} was provided".format(
+                    self.input_meta[1], self.input_meta[2], landmark_vector.shape, landmark_vector.dtype
                 )
             )
         self.tf_lite_interpreter.set_tensor(self.input_meta[0], landmark_vector)
