@@ -42,10 +42,17 @@ class TFLiteClassifier(TrainableClassifier):
 
     @classmethod
     def from_file(cls, tf_lite_model_path):
-        from tflite_runtime.interpreter import Interpreter
+        try:
+            from tflite_runtime.interpreter import Interpreter
+
+            interpreter = Interpreter(model_path=tf_lite_model_path)
+        except ImportError:
+            import tensorflow
+
+            interpreter = tensorflow.lite.Interpreter(model_path=tf_lite_model_path)
 
         instance = cls()
-        instance.tf_lite_interpreter = Interpreter(model_path=tf_lite_model_path)
+        instance.tf_lite_interpreter = interpreter
         instance.setup_interpreter_meta()
         return instance
 

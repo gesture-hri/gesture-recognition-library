@@ -2,15 +2,13 @@ import logging
 import os
 import sys
 
-import numpy as np
-import tensorflow as tf
 from PIL import Image
 from sklearn.utils import shuffle
 
 from gesture_recognition.classification import *
 from gesture_recognition.gesture_recognizer import GestureRecognizer
 from gesture_recognition.mediapipe_cache import PickleCache
-from gesture_recognition.preprocessors import *
+from gesture_recognition.preprocessing import *
 
 logging.basicConfig(level=logging.INFO)
 
@@ -86,7 +84,7 @@ if __name__ == "__main__":
             "verbose": 0,
         },
     )
-    preprocessor = DefaultPreprocessor()
+    preprocessor = TFLitePreprocessor.from_function(default_preprocessing)
     cache = PickleCache(cache_path)
     categories = [gesture.name for gesture in os.scandir(dataset_path)]
 

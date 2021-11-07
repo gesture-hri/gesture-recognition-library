@@ -1,11 +1,14 @@
-from typing import Callable, Tuple
+from typing import Callable
 
 import numpy as np
 
-from gesture_recognition.preprocessors.preprocessor import Preprocessor
+from gesture_recognition.preprocessing.preprocessor import Preprocessor
 
 
 class TFLitePreprocessor(Preprocessor):
+    HAND_LANDMARKS_SHAPE = [21, 3]
+    POSE_LANDMARK_SHAPE = [33, 3]
+
     def __init__(self, tf_lite_interpreter, function_as_tf_lite_model=None):
         """
         :param tf_lite_interpreter: TensorflowLite runtime interpreter created from appropriate preprocessing function
@@ -31,17 +34,12 @@ class TFLitePreprocessor(Preprocessor):
         )
 
     def preprocess(self, landmark_vector: np.ndarray, *args, **kwargs):
+        landmark_vector = landmark_vector.astype(self.input_meta[2])
         self.tf_lite_interpreter.allocate_tensors()
-        if (
-            landmark_vector.shape != self.input_meta[1]
-            or landmark_vector.dtype != self.input_meta[2]
-        ):
+        if np.any(landmark_vector.shape != self.input_meta[1]):
             raise ValueError(
-                "Preprocessor expects input vector of shape {} and dtype {}. Shape {} nd dtype {} was provided".format(
-                    self.input_meta[1],
-                    self.input_meta[2],
-                    landmark_vector.shape,
-                    landmark_vector.dtype,
+                "Preprocessor expects input vector of shape {}. Shape {} was provided".format(
+                    self.input_meta[1], landmark_vector.shape
                 )
             )
         self.tf_lite_interpreter.set_tensor(self.input_meta[0], landmark_vector)
@@ -57,8 +55,12 @@ class TFLitePreprocessor(Preprocessor):
 
     @classmethod
     def from_function(
-        cls, function: Callable[[np.ndarray], np.ndarray], input_shape: Tuple[int]
+        cls,
+        function: Callable[[np.ndarray], np.ndarray],
+        input_shape=None,
     ):
+        if input_shape is None:
+            input_shape = TFLitePreprocessor.HAND_LANDMARKS_SHAPE
         import tensorflow as tf
 
         tf_function = tf.function(
@@ -73,7 +75,14 @@ class TFLitePreprocessor(Preprocessor):
 
     @classmethod
     def from_file(cls, tf_lite_preprocessor_path):
-        from tflite_runtime.interpreter import Interpreter
+        try:
+            from tflite_runtime.interpreter import Interpreter
 
-        interpreter = Interpreter(model_path=tf_lite_preprocessor_path)
+            interpreter = Interpreter(model_path=tf_lite_preprocessor_path)
+        except ImportError:
+            import tensorflow
+
+            interpreter = tensorflow.lite.Interpreter(
+                model_path=tf_lite_preprocessor_path
+            )
         return cls(interpreter)

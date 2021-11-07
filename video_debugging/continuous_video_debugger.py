@@ -7,7 +7,7 @@ import cv2
 
 from gesture_recognition.classification import TFLiteClassifier
 from gesture_recognition.gesture_recognizer import GestureRecognizer
-from gesture_recognition.preprocessors import *
+from gesture_recognition.preprocessing import *
 from video_debugging import FrameSource
 
 logging.basicConfig(level=logging.INFO)
@@ -35,11 +35,12 @@ if __name__ == "__main__":
         raise ValueError("Invalid number of arguments")
 
     classifier = TFLiteClassifier.from_file(model_binary_path)
+    preprocessor = TFLitePreprocessor.from_function(default_preprocessing)
     categories = [path.name for path in os.scandir(dataset_path)]
 
     pretrained_recognizer = GestureRecognizer(
         classifier=classifier,
-        preprocessor=DefaultPreprocessor(),
+        preprocessor=preprocessor,
         categories=categories,
     )
     source = FrameSource(video_path)

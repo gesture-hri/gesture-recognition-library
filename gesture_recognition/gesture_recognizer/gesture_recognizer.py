@@ -6,7 +6,7 @@ import numpy as np
 
 from gesture_recognition.classification import TrainableClassifier
 from gesture_recognition.mediapipe_cache import MediapipeCache
-from gesture_recognition.preprocessors import Preprocessor
+from gesture_recognition.preprocessing import Preprocessor
 
 logger = logging.getLogger("gesture recognizer")
 
