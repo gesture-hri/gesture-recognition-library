@@ -1,3 +1,4 @@
+import sys
 from typing import Callable
 
 import numpy as np
@@ -75,14 +76,14 @@ class TFLitePreprocessor(Preprocessor):
 
     @classmethod
     def from_file(cls, tf_lite_preprocessor_path):
-        try:
-            from tflite_runtime.interpreter import Interpreter
-
-            interpreter = Interpreter(model_path=tf_lite_preprocessor_path)
-        except ImportError:
+        if "tensorflow" in sys.modules:
             import tensorflow
 
             interpreter = tensorflow.lite.Interpreter(
                 model_path=tf_lite_preprocessor_path
             )
+        else:
+            from tflite_runtime.interpreter import Interpreter
+
+            interpreter = Interpreter(model_path=tf_lite_preprocessor_path)
         return cls(interpreter)

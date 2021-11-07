@@ -1,3 +1,5 @@
+import sys
+
 import numpy as np
 from sklearn.model_selection import train_test_split
 
@@ -42,14 +44,14 @@ class TFLiteClassifier(TrainableClassifier):
 
     @classmethod
     def from_file(cls, tf_lite_model_path):
-        try:
-            from tflite_runtime.interpreter import Interpreter
-
-            interpreter = Interpreter(model_path=tf_lite_model_path)
-        except ImportError:
+        if "tensorflow" in sys.modules:
             import tensorflow
 
             interpreter = tensorflow.lite.Interpreter(model_path=tf_lite_model_path)
+        else:
+            from tflite_runtime.interpreter import Interpreter
+
+            interpreter = Interpreter(model_path=tf_lite_model_path)
 
         instance = cls()
         instance.tf_lite_interpreter = interpreter
