@@ -35,7 +35,9 @@ if __name__ == "__main__":
         raise ValueError("Invalid number of arguments")
 
     classifier = TFLiteClassifier.from_file(model_binary_path)
-    preprocessor = TFLitePreprocessor.from_function(default_preprocessing)
+    preprocessor = TFLitePreprocessor.from_function(
+        default_preprocessing, [GestureRecognizer.LandmarkShapes.HAND_LANDMARK_SHAPE]
+    )
     categories = [path.name for path in os.scandir(dataset_path)]
 
     pretrained_recognizer = GestureRecognizer(

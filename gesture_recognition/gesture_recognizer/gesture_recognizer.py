@@ -13,6 +13,14 @@ logger = logging.getLogger("gesture recognizer")
 
 # TODO: Add serialization/deserialization
 class GestureRecognizer:
+    class LandmarkShapes:
+        """
+        Mediapipe results shape holder
+        """
+
+        HAND_LANDMARK_SHAPE = (21, 3)
+        POSE_LANDMARK_SHAPE = (33, 3)
+
     def __init__(
         self,
         classifier: TrainableClassifier,

@@ -86,7 +86,9 @@ if __name__ == "__main__":
             "verbose": 0,
         },
     )
-    preprocessor = TFLitePreprocessor.from_function(default_preprocessing)
+    preprocessor = TFLitePreprocessor.from_function(
+        default_preprocessing, [GestureRecognizer.LandmarkShapes.HAND_LANDMARK_SHAPE]
+    )
     cache = PickleCache(cache_path)
     categories = [gesture.name for gesture in os.scandir(dataset_path)]
 
