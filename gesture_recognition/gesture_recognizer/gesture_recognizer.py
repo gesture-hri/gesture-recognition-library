@@ -1,5 +1,5 @@
 import logging
-from typing import List, Iterable
+from typing import List, Iterable, Union
 
 import mediapipe
 import numpy as np
@@ -36,7 +36,6 @@ class GestureRecognizer:
         self.categories = categories
 
         if self.hands:
-            # TODO: what about two-handed gestures in the same dataset with single-handed?
             self.mediapipe_handle = mediapipe.solutions.hands.Hands(
                 static_image_mode=True,
                 max_num_hands=1,
@@ -49,11 +48,12 @@ class GestureRecognizer:
         if self.cache is not None:
             self.cache.initialize()
 
-    def _image_flow(self, image: np.ndarray):
+    def _image_flow(self, image: np.ndarray) -> Union[List[np.ndarray], None]:
         """
         Performs normalization and mediapipe processing on raw image before it is fed into classifier.
         :param image: Image to perform operations on.
-        :return: Data format that can be accepted by preprocessor.
+        :return: List of numpy arrays representing extracted landmarks specific to particular mediapipe solution,
+        or None in case of unsuccessful mediapipe inference.
         """
 
         try:
