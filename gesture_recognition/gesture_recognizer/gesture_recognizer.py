@@ -11,7 +11,7 @@ from gesture_recognition.preprocessing import Preprocessor
 logger = logging.getLogger("gesture recognizer")
 
 
-# TODO: Add .from_config file method.
+# TODO: Add serialization/deserialization
 class GestureRecognizer:
     def __init__(
         self,
@@ -70,20 +70,24 @@ class GestureRecognizer:
             # In case of Pose solution only Single NormalizedLandmarkList object is returned.
             # self.preprocessor expects list of that
             if self.hands:
-                landmarks = np.array(
-                    [
-                        [landmark.x, landmark.y, landmark.z]
-                        for landmarks in mediapipe_output
-                        for landmark in landmarks.landmark
-                    ],
-                ).astype(np.float32)
+                landmarks = [
+                    np.array(
+                        [
+                            [landmark.x, landmark.y, landmark.z]
+                            for landmarks in mediapipe_output
+                            for landmark in landmarks.landmark
+                        ]
+                    ).astype(np.float32)
+                ]
             else:
-                landmarks = np.array(
-                    [
-                        [landmark.x, landmark.y, landmark.z]
-                        for landmark in mediapipe_output.landmark
-                    ]
-                ).astype(np.float32)
+                landmarks = [
+                    np.array(
+                        [
+                            [landmark.x, landmark.y, landmark.z]
+                            for landmark in mediapipe_output.landmark
+                        ]
+                    ).astype(np.float32)
+                ]
             return landmarks
         return mediapipe_output
 
