@@ -40,7 +40,7 @@ class TFLitePreprocessor(Preprocessor):
                 or landmark_vector.dtype != meta[2]
             ):
                 raise ValueError(
-                    "Preprocessor expects input vector of shape {} and type {}. Shape {} and type {} was provided".format(
+                    "Preprocessor expects input vector of shape {} and type {}, but {} and {} was provided".format(
                         meta[1],
                         meta[2],
                         landmark_vector.shape,

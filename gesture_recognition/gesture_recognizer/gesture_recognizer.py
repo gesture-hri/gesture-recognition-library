@@ -1,17 +1,18 @@
+import json
 import logging
+import os
 from typing import List, Iterable, Union
 
 import mediapipe
 import numpy as np
 
-from gesture_recognition.classification import TrainableClassifier
+from gesture_recognition.classification import TrainableClassifier, TFLiteClassifier
 from gesture_recognition.mediapipe_cache import MediapipeCache
-from gesture_recognition.preprocessing import Preprocessor
+from gesture_recognition.preprocessing import Preprocessor, TFLitePreprocessor
 
 logger = logging.getLogger("gesture recognizer")
 
 
-# TODO: Add serialization/deserialization
 class GestureRecognizer:
     class LandmarkShapes:
         """
@@ -147,3 +148,46 @@ class GestureRecognizer:
         if self.categories:
             return [self.categories[label] for label in classification]
         return classification
+
+    def save_recognizer(self, path):
+        if not isinstance(self.classifier, TFLiteClassifier):
+            raise AttributeError(
+                "Attribute `classifier` must be instance of TFLiteClassifier class to save recognizer using "
+                "this method. Override it if you are working with custom TrainableClassifier derived class."
+            )
+
+        if not isinstance(self.preprocessor, TFLitePreprocessor):
+            raise AttributeError(
+                "Attribute `preprocessor` must be instance of TFLitePreprocessor class to save recognizer using "
+                "this method. Override it if you are working with custom Preprocessor derived class."
+            )
+
+        os.makedirs(path, os.O_RDWR, exist_ok=True)
+
+        classifier_path = os.path.join(path, "classifier.tflite")
+        preprocessor_path = os.path.join(path, "preprocessor.tflite")
+        config_path = os.path.join(path, "config.json")
+
+        self.classifier.save_classifier(classifier_path)
+        self.preprocessor.save_preprocessor(preprocessor_path)
+        with open(config_path, "w+") as config_fd:
+            config = {
+                "hands": self.hands,
+            }
+            json.dump(config, config_fd)
+
+    @classmethod
+    def from_recognizer_dir(cls, path):
+        classifier_path = os.path.join(path, "classifier.tflite")
+        preprocessor_path = os.path.join(path, "preprocessor.tflite")
+        config_path = os.path.join(path, "config.json")
+
+        classifier = TFLiteClassifier.from_file(classifier_path)
+        preprocessor = TFLitePreprocessor.from_file(preprocessor_path)
+
+        with open(config_path, "rb") as config_fd:
+            config = json.load(config_fd)
+
+        return cls(
+            classifier=classifier, preprocessor=preprocessor, hands=config["hands"]
+        )
