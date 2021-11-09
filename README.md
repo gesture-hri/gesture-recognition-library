@@ -67,7 +67,9 @@ from gesture_recognition.preprocessing import *
 
 
 classifier = TFLiteClassifier(...)
-preprocessor = TFLitePreprocessor.from_function(default_preprocessing)
+preprocessor = TFLitePreprocessor.from_function(
+    default_preprocessing, [GestureRecognizer.LandmarkShapes.HAND_LANDMARK_SHAPE]
+)
 cache = PickleCache('path/to/mediapipe/output')
 
 gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache, hands=True)
