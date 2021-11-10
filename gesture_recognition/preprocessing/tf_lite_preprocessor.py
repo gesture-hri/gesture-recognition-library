@@ -36,20 +36,26 @@ class TFLitePreprocessor(Preprocessor):
         preprocessing model/function output.
         """
 
+        if len(self.input_meta) != len(landmark_vectors):
+            raise ValueError(
+                f"Invalid number of input tensors. {len(self.input_meta)} expected, but {len(landmark_vectors)} given"
+            )
+
         self.tf_lite_interpreter.allocate_tensors()
         for landmark_vector, meta in zip(landmark_vectors, self.input_meta):
-            if (
-                np.any(landmark_vector.shape != meta[1])
-                or landmark_vector.dtype != meta[2]
-            ):
+            if np.any(landmark_vector.shape != meta[1]):
                 raise ValueError(
-                    "Preprocessor expects input vector of shape {} and type {}, but {} and {} was provided".format(
-                        meta[1],
-                        meta[2],
-                        landmark_vector.shape,
-                        landmark_vector.dtype,
-                    )
+                    f"Shape mismatch for input {meta[0]}. {meta[1]} expected but {landmark_vector.shape} given."
                 )
+
+            if meta[2] != landmark_vector.dtype:
+                try:
+                    landmark_vector = landmark_vector.astype(meta[2])
+                except Exception:
+                    raise ValueError(
+                        f"Couldn't convert type {landmark_vector.dtype} to {meta[2]} which is required by preprocessor."
+                    )
+
             self.tf_lite_interpreter.set_tensor(meta[0], landmark_vector)
         self.tf_lite_interpreter.invoke()
         return [
