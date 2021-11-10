@@ -9,6 +9,6 @@ setup(
         "opencv-python==4.5.3.56",
         "sklearn==0.0",
         "numpy==1.19.5",
-        "tflite_runtime==2.5.0"
+        "tflite_runtime==2.5.0",
     ],
 )
