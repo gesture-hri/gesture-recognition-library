@@ -26,10 +26,16 @@ poetry install
 to install project dependencies defined in `pyproject.toml` to your setup. 
 
 ### Build and installation
-To build library simply run:
+Library can be build with two options - with both recognizer training and inference and with inference functionality only.
+The former is provided to enable inference in environments where tensorflow cannot be installed. Using the second option
+requires previously trained classifier deserialization. To build library with full functionality run:
 ```shell
-poetry build
+python setup.py sdist bdist_wheel
 ```
+To build inference-only version run:
+```shell
+python setup_lite.py sdist bdist_wheel 
+````
 Once build is finished find .whl file in dist directory and run:
 ```shell
 pip install path/to/.whl/file 
