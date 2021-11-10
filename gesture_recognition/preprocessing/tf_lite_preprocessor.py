@@ -21,16 +21,19 @@ class TFLitePreprocessor(Preprocessor):
             (meta["index"], meta["shape"], meta["dtype"])
             for meta in self.tf_lite_interpreter.get_input_details()
         ]
-        self.output_index = self.tf_lite_interpreter.get_output_details()[0]["index"]
+        self.output_indices = [
+            meta["index"] for meta in self.tf_lite_interpreter.get_output_details()
+        ]
 
     def preprocess(
         self, landmark_vectors: List[np.ndarray], *args, **kwargs
-    ) -> np.ndarray:
+    ) -> List[np.ndarray]:
         """
         Executes behavior of preprocessing function that was used to create this TFLitePreprocessor instance.
         :param landmark_vectors: List of numpy arrays that represent content and order of arguments of function
         used to create TFLitePreprocessor instance.
-        :return: Result that would be obtained from preprocessing_function(*landmark_vectors)
+        :return: Result of preprocessing in the form of list of numpy arrays corresponding to each
+        preprocessing model/function output.
         """
 
         self.tf_lite_interpreter.allocate_tensors()
@@ -49,7 +52,9 @@ class TFLitePreprocessor(Preprocessor):
                 )
             self.tf_lite_interpreter.set_tensor(meta[0], landmark_vector)
         self.tf_lite_interpreter.invoke()
-        return self.tf_lite_interpreter.get_tensor(self.output_index)
+        return [
+            self.tf_lite_interpreter.get_tensor(index) for index in self.output_indices
+        ]
 
     def save_preprocessor(self, path):
         """
@@ -66,9 +71,8 @@ class TFLitePreprocessor(Preprocessor):
         cls, function: Callable[..., np.ndarray], input_shapes: List[Tuple[int, ...]]
     ):
         """
-        :param function: Preprocessing function that takes arbitrary number of numpy array as arguments and returns
-        single numpy array as a result. Note that this function should only use tensorflow libraries for
-        matrix manipulation.
+        :param function: Preprocessing function that takes arbitrary number of numpy array as arguments.
+        Note that this function should only use tensorflow libraries for matrix manipulation.
         :param input_shapes: List of shapes of function arguments.
         :return: TFLitePreprocessor instance, that can be serialized into file and used for inference.
         """

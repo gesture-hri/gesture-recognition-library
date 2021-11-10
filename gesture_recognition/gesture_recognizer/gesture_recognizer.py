@@ -142,7 +142,7 @@ class GestureRecognizer:
         if landmarks is None:
             return landmarks
 
-        preprocessed = [self.preprocessor.preprocess(landmarks)]
+        preprocessed = self.preprocessor.preprocess(landmarks)
         classification = self.classifier.infer(preprocessed)
 
         if self.categories:
