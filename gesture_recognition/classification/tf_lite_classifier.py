@@ -1,5 +1,4 @@
 import numpy as np
-from sklearn.model_selection import train_test_split
 
 from gesture_recognition.classification.trainable_classifier import TrainableClassifier
 
@@ -55,6 +54,7 @@ class TFLiteClassifier(TrainableClassifier):
                 "TFLiteClassifier instances that were not instantiated via constructor cannot be trained."
             )
         import tensorflow
+        from sklearn.model_selection import train_test_split
 
         x_train, x_test, y_train, y_test = train_test_split(
             samples,
