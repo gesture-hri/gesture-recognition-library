@@ -32,8 +32,8 @@ class TFLitePreprocessor(Preprocessor):
         Executes behavior of preprocessing function that was used to create this TFLitePreprocessor instance.
         :param landmark_vectors: List of numpy arrays that represent content and order of arguments of function
         used to create TFLitePreprocessor instance.
-        :return: Result of preprocessing in the form of list of numpy arrays corresponding to each
-        preprocessing model/function output.
+        :return: Result of call preprocessing_function(**landmark_vectors) in the form of list of numpy arrays
+        corresponding to each preprocessing function output (eq. element of tuple returned from function).
         """
 
         if len(self.input_meta) != len(landmark_vectors):
@@ -77,8 +77,10 @@ class TFLitePreprocessor(Preprocessor):
         cls, function: Callable[..., np.ndarray], input_shapes: List[Tuple[int, ...]]
     ):
         """
-        :param function: Preprocessing function that takes arbitrary number of numpy array as arguments.
-        Note that this function should only use tensorflow libraries for matrix manipulation.
+        :param function: Preprocessing function that takes arbitrary number of numpy array as arguments, and
+        returns single numpy array or tuple of arbitrary number of numpy arrays as a result.
+        Note that this function should only use tensorflow libraries for matrix manipulation or it will fail to
+        serialize into TensorFlow Lite format.
         :param input_shapes: List of shapes of function arguments.
         :return: TFLitePreprocessor instance, that can be serialized into file and used for inference.
         """
