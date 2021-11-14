@@ -1,5 +1,6 @@
+import sys
+
 import numpy as np
-from sklearn.model_selection import train_test_split
 
 from gesture_recognition.classification.trainable_classifier import TrainableClassifier
 
@@ -42,12 +43,35 @@ class TFLiteClassifier(TrainableClassifier):
 
     @classmethod
     def from_file(cls, tf_lite_model_path):
-        from tflite_runtime.interpreter import Interpreter
+        if "tensorflow" in sys.modules:
+            import tensorflow
+
+            interpreter = tensorflow.lite.Interpreter(model_path=tf_lite_model_path)
+        else:
+            from tflite_runtime.interpreter import Interpreter
+
+            interpreter = Interpreter(model_path=tf_lite_model_path)
 
         instance = cls()
-        instance.tf_lite_interpreter = Interpreter(model_path=tf_lite_model_path)
+        instance.tf_lite_interpreter = interpreter
         instance.setup_interpreter_meta()
         return instance
+
+    @staticmethod
+    def _adapt_input_shape(x, y):
+        if not x:
+            return np.array(x), np.array(y)
+
+        if len(x[0]) == 1:
+            return np.array([sample[0] for sample in x]), np.array(y)
+
+        x_reshaped = [[] for _ in x[0]]
+        for sample in enumerate(x):
+            for idx, input_elem in enumerate(sample):
+                x_reshaped[idx].append(sample)
+
+        x_reshaped = [np.array(input_samples) for input_samples in x_reshaped]
+        return x_reshaped, np.array(y)
 
     def train(self, samples, labels, *args, **kwargs):
         if self.keras_model is None or self.training_params is None:
@@ -55,6 +79,7 @@ class TFLiteClassifier(TrainableClassifier):
                 "TFLiteClassifier instances that were not instantiated via constructor cannot be trained."
             )
         import tensorflow
+        from sklearn.model_selection import train_test_split
 
         x_train, x_test, y_train, y_test = train_test_split(
             samples,
@@ -62,14 +87,11 @@ class TFLiteClassifier(TrainableClassifier):
             test_size=self.test_size,
             random_state=self.random_state,
         )
-        self.keras_model.fit(
-            np.array(x_train).astype(np.float32),
-            np.array(y_train),
-            **self.training_params,
-        )
-        _, score = self.keras_model.evaluate(
-            np.array(x_test).astype(np.float32), np.array(y_test), verbose=0
-        )
+        x_train, y_train = self._adapt_input_shape(x_train, y_train)
+        self.keras_model.fit(x_train, y_train, **self.training_params)
+
+        x_test, y_test = self._adapt_input_shape(x_test, y_test)
+        _, score = self.keras_model.evaluate(x_test, y_test, verbose=0)
 
         self.tf_lite_model = tensorflow.lite.TFLiteConverter.from_keras_model(
             self.keras_model
