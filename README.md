@@ -51,26 +51,31 @@ poetry run black .
 The core functionality of the library is provided by GestureRecognizer class, from gesture_recognizer module.
 To instantiate GestureRecognizer three other objects are needed: 
 
- - TrainableClassifier instance - an adapter for an external classifier (sklearn, keras etc.) 
+ - `TrainableClassifier` instance - an adapter for an external classifier (sklearn, keras etc.) 
 that will be trained classify gestures from mediapipe pose estimation.
- - Preprocessor instance - object responsible for additional preprocessing of mediapipe pose estimation before passing
+ - `Preprocessor` instance - object responsible for additional preprocessing of mediapipe pose estimation before passing
 it to classifier.
- - MediapipeCache instance - this parameter is optional, however recommended. Currently mediapipe does not provide
+ - `MediapipeCache` instance - this parameter is optional, however recommended. Currently mediapipe does not provide
 batch inference which can be harmful for repeated trainings on large dataset. With MediapipeCache instance pose
 estimations are stored and retrieved on repeated trainings.
 
+However `Preprocessor` and `TrainableClassifier` are generic base classes that are easy to override, library is 
+designed and optimized to work with it own derived classes `TFLitePreprocessor` and `TFLiteClassifier` respectively.
+Therefore, it is highly recommended not to override abstract classes and work the ones provided that take advantage
+of highly performant and functional TensorFlow Lite framework.
+
 Example usage might look like this:
 ```shell
-from sklearn.ensemble import RandomForestClassifier
-
-from gesture_recognition.classifiers import *
+from gesture_recognition.classification import *
 from gesture_recognition.gesture_recognizer import GestureRecognizer
 from gesture_recognition.mediapipe_cache import PickleCache
-from gesture_recognition.preprocessors import *
+from gesture_recognition.preprocessing import *
 
 
-classifier = SklearnClassifier(ExtraTreesClassifier(), test_size=0.2)
-preprocessor = DefaultPreprocessor()
+classifier = TFLiteClassifier(...)
+preprocessor = TFLitePreprocessor.from_function(
+    default_preprocessing, [GestureRecognizer.LandmarkShapes.HAND_LANDMARK_SHAPE]
+)
 cache = PickleCache('path/to/mediapipe/output')
 
 gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache, hands=True)
@@ -84,7 +89,7 @@ that mediapipe expects RGB images. Violation to this assumption might result in 
 so make sure that source of your images follows RGB format.
 Example of usage:
 ```shell
-python train_recognizer.py <dataset_name> path/to/dataset path/to/cache/directory path/to/recognizer/binary/destination
+python train_recognizer.py <dataset_name> path/to/dataset path/to/cache/directory path/to/recognizer/save/destination
 ```
 
 For more detailed information on available classes, their methods and attributes refer to appropriate class docstring.
@@ -94,11 +99,11 @@ Although the main objective ot this library is to simplify and automate gesture 
 `video_debugging` package contains script, `continuous_video_debugger.py` that allows to test 
 trained GestureRecognizer instance in real life like scenario. The script can be used on both video (.mp4) file:
 ```shell
-python continuous_video_debugger.py path/to/.mp4/file path/to/trained/recognizer/save/file
+python continuous_video_debugger.py path/to/.mp4/file path/to/trained/recognizer/save/source
 ```
 and live webcam feed:
 ```shell
-python continuous_video_debugger.py path/to/trained/recognizer/save/file
+python continuous_video_debugger.py path/to/trained/recognizer/save/source
 ```
 In both cases frame timestamp, classification result and inference are logged for each frame mediapipe successfully 
 detects human posture. Conversion from BGR format used by opencv to RGB expected by mediapipe is handled automatically

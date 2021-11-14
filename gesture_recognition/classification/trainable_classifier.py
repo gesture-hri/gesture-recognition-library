@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
 
-# TODO: Add save()/pickle() method to enable custom saving/pickling in GestureRecognizer()
 class TrainableClassifier(ABC):
     """
     All classifiers used on top of mediapipe must override this class by implementing abstract methods below

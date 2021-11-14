@@ -10,7 +10,7 @@ from sklearn.utils import shuffle
 from gesture_recognition.classification import *
 from gesture_recognition.gesture_recognizer import GestureRecognizer
 from gesture_recognition.mediapipe_cache import PickleCache
-from gesture_recognition.preprocessors import *
+from gesture_recognition.preprocessing import *
 
 logging.basicConfig(level=logging.INFO)
 
@@ -25,7 +25,7 @@ if __name__ == "__main__":
         into directories based on gesture they represent. Directory for each gesture should be named by the gesture it
         represents
         :param cache_path: path (absolut or relative) to directory where mediapipe output on dataset will be cached
-        :param classifier_binary_path: path (absolute or relative) under which serialized classifier instance
+        :param recognizer_save_dir_path: path (absolute or relative) under which recognizer instance
         will be stored
     Library developers are encouraged to experiment with classifier and preprocessor variables to find optimal
     combination, specific to dataset they are working with.
@@ -37,7 +37,7 @@ if __name__ == "__main__":
             dataset_name,
             dataset_path,
             cache_path,
-            classifier_binary_path,
+            recognizer_save_dir_path,
         ) = sys.argv
     except IndexError:
         raise ValueError("Invalid number of arguments")
@@ -86,7 +86,9 @@ if __name__ == "__main__":
             "verbose": 0,
         },
     )
-    preprocessor = DefaultPreprocessor()
+    preprocessor = TFLitePreprocessor.from_function(
+        default_preprocessing, [GestureRecognizer.LandmarkShapes.HAND_LANDMARK_SHAPE]
+    )
     cache = PickleCache(cache_path)
     categories = [gesture.name for gesture in os.scandir(dataset_path)]
 
@@ -96,6 +98,6 @@ if __name__ == "__main__":
         samples,
         labels,
     )
-    classifier.save_classifier(classifier_binary_path)
+    gesture_recognizer.save_recognizer(recognizer_save_dir_path)
 
     logger.info(f"Keras classifier scored {score} on {dataset_name} dataset")
