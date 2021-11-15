@@ -2,7 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name="gesture-recognition-lite",
-    packages=find_packages(include=["gesture_recognition.*"]),
+    packages=find_packages(
+        include=["gesture_recognition.*"],
+        exclude=["gesture_recognition.preprocessing.preprocessing_functions"],
+    ),
     version="0.0.1",
     install_requires=[
         "mediapipe==0.8.8.1",
