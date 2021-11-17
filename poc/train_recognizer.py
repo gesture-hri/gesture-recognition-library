@@ -10,7 +10,10 @@ from sklearn.utils import shuffle
 from gesture_recognition.classification import *
 from gesture_recognition.gesture_recognizer import GestureRecognizer
 from gesture_recognition.mediapipe_cache import PickleCache
-from gesture_recognition.preprocessing import *
+from gesture_recognition.preprocessing import TFLitePreprocessor
+from gesture_recognition.preprocessing.preprocessing_functions import (
+    default_preprocessing,
+)
 
 logging.basicConfig(level=logging.INFO)
 
