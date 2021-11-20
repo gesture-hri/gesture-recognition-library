@@ -29,8 +29,13 @@ class GestureRecognizer:
         cache: MediapipeCache = None,
         categories: List[any] = None,
         hands=True,
+        advanced_pose_estimator=False,
     ):
         """
+        :param advanced_pose_estimator: Boolean indicating whether pose estimator model (mediapipe) should be used
+        with higher complexity version. Setting this parameter to true might lead to higher classification accuracy, but
+        also higher inference process latency. For most practical cases pose estimator of lower (default) complexity
+        should be sufficient.
         :param categories: List of objects associated with gesture numeric label.
         :param classifier: Classifier that will be used on top of mediapipe output to classify gestures
         :param preprocessor: Object responsible for additional semantic preprocessing of mediapipe output before
@@ -43,15 +48,18 @@ class GestureRecognizer:
         self.preprocessor = preprocessor
         self.cache = cache
         self.categories = categories
+        self.mediapipe_model_complexity = 1 if advanced_pose_estimator else 0
 
         if self.hands:
             self.mediapipe_handle = mediapipe.solutions.hands.Hands(
                 static_image_mode=True,
                 max_num_hands=1,
+                model_complexity=self.mediapipe_model_complexity,
             )
         else:
             self.mediapipe_handle = mediapipe.solutions.pose.Pose(
-                static_image_mode=True
+                static_image_mode=True,
+                model_complexity=self.mediapipe_model_complexity,
             )
 
         if self.cache is not None:
@@ -173,6 +181,7 @@ class GestureRecognizer:
         with open(config_path, "w+") as config_fd:
             config = {
                 "hands": self.hands,
+                "advanced_pose_estimator": self.mediapipe_model_complexity,
             }
             json.dump(config, config_fd)
 
@@ -189,5 +198,8 @@ class GestureRecognizer:
             config = json.load(config_fd)
 
         return cls(
-            classifier=classifier, preprocessor=preprocessor, hands=config["hands"]
+            classifier=classifier,
+            preprocessor=preprocessor,
+            hands=config["hands"],
+            advanced_pose_estimator=config["advanced_pose_estimator"],
         )
