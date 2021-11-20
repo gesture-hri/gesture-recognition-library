@@ -1,18 +1,27 @@
+import json
 import logging
-from typing import List, Iterable
+import os
+from typing import List, Iterable, Union
 
 import mediapipe
 import numpy as np
 
-from gesture_recognition.classification import TrainableClassifier
+from gesture_recognition.classification import TrainableClassifier, TFLiteClassifier
 from gesture_recognition.mediapipe_cache import MediapipeCache
-from gesture_recognition.preprocessors import Preprocessor
+from gesture_recognition.preprocessing import Preprocessor, TFLitePreprocessor
 
 logger = logging.getLogger("gesture recognizer")
 
 
-# TODO: Add .from_config file method.
 class GestureRecognizer:
+    class LandmarkShapes:
+        """
+        Mediapipe results shape holder
+        """
+
+        HAND_LANDMARK_SHAPE = (21, 3)
+        POSE_LANDMARK_SHAPE = (33, 3)
+
     def __init__(
         self,
         classifier: TrainableClassifier,
@@ -36,7 +45,6 @@ class GestureRecognizer:
         self.categories = categories
 
         if self.hands:
-            # TODO: what about two-handed gestures in the same dataset with single-handed?
             self.mediapipe_handle = mediapipe.solutions.hands.Hands(
                 static_image_mode=True,
                 max_num_hands=1,
@@ -49,11 +57,12 @@ class GestureRecognizer:
         if self.cache is not None:
             self.cache.initialize()
 
-    def _image_flow(self, image: np.ndarray):
+    def _image_flow(self, image: np.ndarray) -> Union[List[np.ndarray], None]:
         """
         Performs normalization and mediapipe processing on raw image before it is fed into classifier.
         :param image: Image to perform operations on.
-        :return: Data format that can be accepted by preprocessor.
+        :return: List of numpy arrays representing extracted landmarks specific to particular mediapipe solution,
+        or None in case of unsuccessful mediapipe inference.
         """
 
         try:
@@ -70,20 +79,24 @@ class GestureRecognizer:
             # In case of Pose solution only Single NormalizedLandmarkList object is returned.
             # self.preprocessor expects list of that
             if self.hands:
-                landmarks = np.array(
-                    [
-                        [landmark.x, landmark.y, landmark.z]
-                        for landmarks in mediapipe_output
-                        for landmark in landmarks.landmark
-                    ],
-                )
+                landmarks = [
+                    np.array(
+                        [
+                            [landmark.x, landmark.y, landmark.z]
+                            for landmarks in mediapipe_output
+                            for landmark in landmarks.landmark
+                        ]
+                    ).astype(np.float32)
+                ]
             else:
-                landmarks = np.array(
-                    [
-                        [landmark.x, landmark.y, landmark.z]
-                        for landmark in mediapipe_output.landmark
-                    ]
-                )
+                landmarks = [
+                    np.array(
+                        [
+                            [landmark.x, landmark.y, landmark.z]
+                            for landmark in mediapipe_output.landmark
+                        ]
+                    ).astype(np.float32)
+                ]
             return landmarks
         return mediapipe_output
 
@@ -129,9 +142,52 @@ class GestureRecognizer:
         if landmarks is None:
             return landmarks
 
-        preprocessed = [self.preprocessor.preprocess(landmarks)]
+        preprocessed = self.preprocessor.preprocess(landmarks)
         classification = self.classifier.infer(preprocessed)
 
         if self.categories:
             return [self.categories[label] for label in classification]
         return classification
+
+    def save_recognizer(self, path):
+        if not isinstance(self.classifier, TFLiteClassifier):
+            raise AttributeError(
+                "Attribute `classifier` must be instance of TFLiteClassifier class to save recognizer using "
+                "this method. Override it if you are working with custom TrainableClassifier derived class."
+            )
+
+        if not isinstance(self.preprocessor, TFLitePreprocessor):
+            raise AttributeError(
+                "Attribute `preprocessor` must be instance of TFLitePreprocessor class to save recognizer using "
+                "this method. Override it if you are working with custom Preprocessor derived class."
+            )
+
+        os.makedirs(path, os.O_RDWR, exist_ok=True)
+
+        classifier_path = os.path.join(path, "classifier.tflite")
+        preprocessor_path = os.path.join(path, "preprocessor.tflite")
+        config_path = os.path.join(path, "config.json")
+
+        self.classifier.save_classifier(classifier_path)
+        self.preprocessor.save_preprocessor(preprocessor_path)
+        with open(config_path, "w+") as config_fd:
+            config = {
+                "hands": self.hands,
+            }
+            json.dump(config, config_fd)
+
+    @classmethod
+    def from_recognizer_dir(cls, path):
+        classifier_path = os.path.join(path, "classifier.tflite")
+        preprocessor_path = os.path.join(path, "preprocessor.tflite")
+        config_path = os.path.join(path, "config.json")
+
+        classifier = TFLiteClassifier.from_file(classifier_path)
+        preprocessor = TFLitePreprocessor.from_file(preprocessor_path)
+
+        with open(config_path, "rb") as config_fd:
+            config = json.load(config_fd)
+
+        return cls(
+            classifier=classifier, preprocessor=preprocessor, hands=config["hands"]
+        )
