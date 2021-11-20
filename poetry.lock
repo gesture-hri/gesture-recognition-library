@@ -252,8 +252,8 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "keras"
-version = "2.6.0"
-description = "TensorFlow Keras."
+version = "2.7.0"
+description = "Deep learning for humans."
 category = "main"
 optional = false
 python-versions = "*"
@@ -774,7 +774,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "15e900de0c73d2944cab619e8acaca279f24579f21572efdf6fbcbdb73615939"
+content-hash = "8225d6983e533b275a9984c551f4729a76bcc4da1712b8b3685c84950d5b22fe"
 
 [metadata.files]
 absl-py = [
@@ -924,7 +924,7 @@ joblib = [
     {file = "joblib-1.1.0.tar.gz", hash = "sha256:4158fcecd13733f8be669be0683b96ebdbbd38d23559f54dca7205aea1bf1e35"},
 ]
 keras = [
-    {file = "keras-2.6.0-py2.py3-none-any.whl", hash = "sha256:504af5656a9829fe803ce48a8580ef16916e89906aceddad9e098614269437e7"},
+    {file = "keras-2.7.0-py2.py3-none-any.whl", hash = "sha256:0c33ae1f728064ca0d35dfba999e9c316f03623bf5688c82fb83cc74a80ea248"},
 ]
 keras-preprocessing = [
     {file = "Keras_Preprocessing-1.1.2-py2.py3-none-any.whl", hash = "sha256:7b82029b130ff61cc99b55f3bd27427df4838576838c5b2f65940e4fcec99a7b"},
