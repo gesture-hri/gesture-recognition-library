@@ -14,6 +14,10 @@ logger = logging.getLogger("gesture recognizer")
 
 
 class GestureRecognizer:
+    _HAND = "hand"
+    _POSE = "pose"
+    _SUPPORTED_MODES = [_HAND, _POSE]
+
     class LandmarkShapes:
         """
         Mediapipe results shape holder
@@ -28,23 +32,30 @@ class GestureRecognizer:
         preprocessor: Preprocessor,
         cache: MediapipeCache = None,
         categories: List[any] = None,
-        hands=True,
+        mode: str = _HAND,
     ):
         """
         :param categories: List of objects associated with gesture numeric label.
         :param classifier: Classifier that will be used on top of mediapipe output to classify gestures
         :param preprocessor: Object responsible for additional semantic preprocessing of mediapipe output before
         passing it to classifier.
-        :param hands: Whether gestures to be recognized are hands gestures.
+        :param mode: Specifies which body parts landmarks will be estimated by mediapipe. This attribute controls
+        which particular mediapipe solution will be used and which attributes of its output will be
+        passed to preprocessor. Must be one of: "hands", "pose"
         :param cache: Indicates whether to cache output of mediapipe application on training dataset.
         """
-        self.hands = hands
+        if mode not in self._SUPPORTED_MODES:
+            raise ValueError(
+                f"Mode: {mode} is not supported. Supported modes are: {', '.join(self._SUPPORTED_MODES)}."
+            )
+
+        self.mode = mode
         self.classifier = classifier
         self.preprocessor = preprocessor
         self.cache = cache
         self.categories = categories
 
-        if self.hands:
+        if self.mode == self._HAND:
             self.mediapipe_handle = mediapipe.solutions.hands.Hands(
                 static_image_mode=True,
                 max_num_hands=1,
@@ -66,7 +77,7 @@ class GestureRecognizer:
         """
 
         try:
-            if self.hands:
+            if self.mode == self._HAND:
                 mediapipe_output = self.mediapipe_handle.process(
                     image
                 ).multi_hand_landmarks
@@ -78,7 +89,7 @@ class GestureRecognizer:
         if mediapipe_output is not None:
             # In case of Pose solution only Single NormalizedLandmarkList object is returned.
             # self.preprocessor expects list of that
-            if self.hands:
+            if self.mode == self._HAND:
                 landmarks = [
                     np.array(
                         [
@@ -172,7 +183,7 @@ class GestureRecognizer:
         self.preprocessor.save_preprocessor(preprocessor_path)
         with open(config_path, "w+") as config_fd:
             config = {
-                "hands": self.hands,
+                "mode": self.mode,
             }
             json.dump(config, config_fd)
 
@@ -189,5 +200,5 @@ class GestureRecognizer:
             config = json.load(config_fd)
 
         return cls(
-            classifier=classifier, preprocessor=preprocessor, hands=config["hands"]
+            classifier=classifier, preprocessor=preprocessor, mode=config["mode"]
         )
