@@ -21,8 +21,9 @@ class TFLitePreprocessor(Preprocessor):
             (meta["index"], meta["shape"], meta["dtype"])
             for meta in self.tf_lite_interpreter.get_input_details()
         ]
-        self.output_indices = [
-            meta["index"] for meta in self.tf_lite_interpreter.get_output_details()
+        self.output_meta = [
+            (meta["index"], meta["shape"])
+            for meta in self.tf_lite_interpreter.get_output_details()
         ]
 
     def preprocess(
@@ -59,7 +60,8 @@ class TFLitePreprocessor(Preprocessor):
             self.tf_lite_interpreter.set_tensor(meta[0], landmark_vector)
         self.tf_lite_interpreter.invoke()
         return [
-            self.tf_lite_interpreter.get_tensor(index) for index in self.output_indices
+            self.tf_lite_interpreter.get_tensor(index)
+            for index, _shape in self.output_meta
         ]
 
     def save_preprocessor(self, path):

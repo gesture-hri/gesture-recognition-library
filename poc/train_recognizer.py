@@ -3,17 +3,13 @@ import os
 import sys
 
 import numpy as np
-import tensorflow as tf
 from PIL import Image
 from sklearn.utils import shuffle
 
-from gesture_recognition.classification import *
-from gesture_recognition.gesture_recognizer import GestureRecognizer
-from gesture_recognition.mediapipe_cache import PickleCache
-from gesture_recognition.preprocessing import TFLitePreprocessor
-from gesture_recognition.preprocessing.preprocessing_functions import (
-    default_preprocessing,
+from gesture_recognition.gesture_recognizer.gesture_recognizer_builder import (
+    GestureRecognizerBuilder,
 )
+from gesture_recognition.mediapipe_cache import PickleCache
 
 logging.basicConfig(level=logging.INFO)
 
@@ -68,34 +64,15 @@ if __name__ == "__main__":
         for _file in shuffle(gesture, random_state=random_state)
     )
 
-    keras_model = tf.keras.Sequential(
-        [
-            tf.keras.layers.Dense(128, activation="relu"),
-            tf.keras.layers.Flatten(),
-            tf.keras.layers.Dense(len(paths), activation="softmax"),
-        ]
-    )
-    keras_model.compile(
-        optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
-        metrics=["acc"],
-        loss="sparse_categorical_crossentropy",
-    )
-    classifier = TFLiteClassifier(
-        keras_model=keras_model,
-        test_size=0.2,
-        random_state=random_state,
-        keras_training_params={
-            "epochs": 10,
-            "verbose": 0,
-        },
-    )
-    preprocessor = TFLitePreprocessor.from_function(
-        default_preprocessing, [GestureRecognizer.LandmarkShapes.HAND_LANDMARK_SHAPE]
-    )
     cache = PickleCache(cache_path)
     categories = [gesture.name for gesture in os.scandir(dataset_path)]
+    gesture_recognizer = (
+        GestureRecognizerBuilder(mode="hand", num_classes=len(paths))
+        .set_cache(cache)
+        .set_categories(categories)
+        .build_recognizer()
+    )
 
-    gesture_recognizer = GestureRecognizer(classifier, preprocessor, cache, categories)
     score = gesture_recognizer.train_end_evaluate(
         dataset_name,
         samples,
@@ -103,4 +80,4 @@ if __name__ == "__main__":
     )
     gesture_recognizer.save_recognizer(recognizer_save_dir_path)
 
-    logger.info(f"Keras classifier scored {score} on {dataset_name} dataset")
+    logger.info(f"Recognizer scored {score} on {dataset_name} dataset")
