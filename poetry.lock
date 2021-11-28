@@ -312,7 +312,7 @@ python-dateutil = ">=2.7"
 
 [[package]]
 name = "mediapipe"
-version = "0.8.8"
+version = "0.8.9"
 description = "MediaPipe is the simplest way for researchers and developers to build world-class ML solutions and applications for mobile, edge, cloud and the web."
 category = "main"
 optional = false
@@ -774,7 +774,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "2bbbf0eea22d0e9302c3fbf62ca0ec02c5d2e37e759edc6699a7d7ceaf36896f"
+content-hash = "b681f785fe8707023fcdbd0779a67e400e9a86b0ef4143e0b6f97059e2aea028"
 
 [metadata.files]
 absl-py = [
@@ -1004,15 +1004,15 @@ matplotlib = [
     {file = "matplotlib-3.4.3.tar.gz", hash = "sha256:fc4f526dfdb31c9bd6b8ca06bf9fab663ca12f3ec9cdf4496fb44bc680140318"},
 ]
 mediapipe = [
-    {file = "mediapipe-0.8.8-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:c115be97b61f407b08bebd1808f96cf50bee4f6175fa2c96b2545972b2487d51"},
-    {file = "mediapipe-0.8.8-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:227eec64d0a653f0c2679cef6272c4a4b0d9305e8645fa9acc2d17d1b02bc0e1"},
-    {file = "mediapipe-0.8.8-cp37-cp37m-win_amd64.whl", hash = "sha256:2580422090bf681610443fccd09215a3a2c864be6c3f0652b05f7b2dfa76c7b5"},
-    {file = "mediapipe-0.8.8-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:40b65522a5cd5687dada8e924560fc828ed0bd736e4f5c78122fff5e296bb67b"},
-    {file = "mediapipe-0.8.8-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9578fe33e1c22292be1e0fe34d06d9f5aaad74532f8d8d5fa1b3d264aba16575"},
-    {file = "mediapipe-0.8.8-cp38-cp38-win_amd64.whl", hash = "sha256:eea0383fac9a4d2652d825658259600136fa40fdbdc68733f23578d4c71cb828"},
-    {file = "mediapipe-0.8.8-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:9f27aa312ac4c9435dd3337ec3a7225172b33c3f7ff4c7c7579cb5a3a000fdb1"},
-    {file = "mediapipe-0.8.8-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a96d43d3aceb1fc1e76624283b93c2fbc98af33d4771927153d866c328bc1597"},
-    {file = "mediapipe-0.8.8-cp39-cp39-win_amd64.whl", hash = "sha256:113d846c51b419c0403ed3101595280dd4698fc498fd32ff323ab317a2d967eb"},
+    {file = "mediapipe-0.8.9-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:4607d6ea19bd6373c325850e235e889ea5a429638467a1a7e13d9fb68e7720b1"},
+    {file = "mediapipe-0.8.9-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1b8e2940deee821adaaf405ebf20db57691c1beed16f8ab051246cbc4426a681"},
+    {file = "mediapipe-0.8.9-cp37-cp37m-win_amd64.whl", hash = "sha256:292e193f819cc8b9dbfa79d2013b8406dd3b51b4b7dcb3d130e9f3bb5ed7c417"},
+    {file = "mediapipe-0.8.9-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:69cff4565b4065c44a6a42bba8a9b1c8d7f7d60e0e5e8695eb3c68e71008e93e"},
+    {file = "mediapipe-0.8.9-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:aa8c49aed1b1ab7c0ffb1c2ae603dd8da0e03f14c75db9b339fd2ddd110f0633"},
+    {file = "mediapipe-0.8.9-cp38-cp38-win_amd64.whl", hash = "sha256:cb84cbc890ab2ada6d0d7530725ede968b517485627afc9155a18fe3a98736d6"},
+    {file = "mediapipe-0.8.9-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:4d431101dcf84aa09f3fd4160c338fb77fd62dd9a59ad7098f2e32a2e6323249"},
+    {file = "mediapipe-0.8.9-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:899f686f323ceeeb4a5ea359b08f572342b9fc5672b0fb2cdad1cee03b1d8609"},
+    {file = "mediapipe-0.8.9-cp39-cp39-win_amd64.whl", hash = "sha256:1b88163adfa9f4a70b56803ed960435f0907688047d3b930156a1d35a38cf965"},
 ]
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
@@ -1355,12 +1355,16 @@ tensorboard-plugin-wit = [
 tensorflow = [
     {file = "tensorflow-2.6.2-cp36-cp36m-macosx_10_11_x86_64.whl", hash = "sha256:9c85ba08cd08dbf3ba09720e03672da3ccdf969377be85d03bc24b5fe3ca8c21"},
     {file = "tensorflow-2.6.2-cp36-cp36m-manylinux2010_x86_64.whl", hash = "sha256:423e814557ddd1562a01a78925362bb25b47bafd4f840f22dae34033945beffd"},
+    {file = "tensorflow-2.6.2-cp36-cp36m-win_amd64.whl", hash = "sha256:22b88b00d74774ee1ffd22e504b37ae9af512aff804d26652d2497687830525f"},
     {file = "tensorflow-2.6.2-cp37-cp37m-macosx_10_11_x86_64.whl", hash = "sha256:16dc1ee49dd8b761577f8abd914a2836647de393b17fe140885f72acd8483e96"},
     {file = "tensorflow-2.6.2-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:902b233337538e89752f019b3c16b23dff4915f6d3666c35ec029ab4641e9f1c"},
+    {file = "tensorflow-2.6.2-cp37-cp37m-win_amd64.whl", hash = "sha256:e12e70b768e2f1901e69367fae94ac78b0f524019ea439ab849dd2afadcd6450"},
     {file = "tensorflow-2.6.2-cp38-cp38-macosx_10_11_x86_64.whl", hash = "sha256:caffa6d919b428901e224f778206d5bac4b553dadc1301409781af971b06e000"},
     {file = "tensorflow-2.6.2-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:6da1ca578c061d6072829777d121a0b755d3d50770b4ea3879cdb5eba28dee03"},
+    {file = "tensorflow-2.6.2-cp38-cp38-win_amd64.whl", hash = "sha256:2c9c4506cc8bb5cdd25a9b5046fbdc91dd29ba931f55c98a126f33a9c86668f1"},
     {file = "tensorflow-2.6.2-cp39-cp39-macosx_10_11_x86_64.whl", hash = "sha256:50e216f3c8512d27d41d24b8990faa2d8a408196cf53342703c26ff5e2cf0ab0"},
     {file = "tensorflow-2.6.2-cp39-cp39-manylinux2010_x86_64.whl", hash = "sha256:ec08a181a587504ccde13960d47a687e8155c4d1f24750801db9da41d95e7722"},
+    {file = "tensorflow-2.6.2-cp39-cp39-win_amd64.whl", hash = "sha256:b57cebd87d31de8ebd200ad5957d7b54145eafb650f7d8aaf21e89718bade50a"},
 ]
 tensorflow-estimator = [
     {file = "tensorflow_estimator-2.6.0-py2.py3-none-any.whl", hash = "sha256:cf78528998efdb637ac0abaf525c929bf192767544eb24ae20d9266effcf5afd"},
