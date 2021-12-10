@@ -72,6 +72,15 @@ class GestureRecognizerBuilder:
 
         self.categories = None
         self.cache = None
+        self.complexity = "low"
+
+    def set_complexity(self, complexity: str):
+        """
+        :param complexity: This attribute has the same meaning as 'complexity' attribute of GestureRecognizer. It will
+        be directly passed to GestureRecognizer constructor.
+        """
+        self.complexity = complexity
+        return self
 
     def set_preprocessing(self, preprocessing: Callable[..., np.ndarray]):
         """
@@ -145,6 +154,7 @@ class GestureRecognizerBuilder:
             cache=self.cache,
             categories=self.categories,
             mode=self.mode,
+            complexity=self.complexity,
         )
 
     def _create_keras_model(self):
