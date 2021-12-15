@@ -18,10 +18,6 @@ class GestureRecognizer:
     _POSE = "pose"
     _SUPPORTED_MODES = [_HAND, _POSE]
 
-    _LOW_COMPLEXITY = "low"
-    _MEDIUM_COMPLEXITY = "medium"
-    _HIGH_COMPLEXITY = "high"
-
     class LandmarkShapes:
         """
         Mediapipe results shape holder
@@ -37,7 +33,6 @@ class GestureRecognizer:
         cache: MediapipeCache = None,
         categories: List[any] = None,
         mode: str = _HAND,
-        complexity: str = _LOW_COMPLEXITY,
     ):
         """
         :param categories: List of objects associated with gesture numeric label.
@@ -48,9 +43,6 @@ class GestureRecognizer:
         which particular mediapipe solution will be used and which attributes of its output will be
         passed to preprocessor. Must be one of: "hands", "pose"
         :param cache: Indicates whether to cache output of mediapipe application on training dataset.
-        :param complexity: Specifies mediapipe solution complexity to be used for landmarks estimation. The higher the
-        complexity, the higher landmarks estimation accuracy, but also the higher estimation latency. Must be on of:
-        "high", "low" if mode is "hand" and one of: "high", "medium", "low" if mode is "pose".
         """
 
         if mode not in self._SUPPORTED_MODES:
@@ -59,48 +51,19 @@ class GestureRecognizer:
             )
 
         self.mode = mode
-        self.complexity = complexity
         self.classifier = classifier
         self.preprocessor = preprocessor
         self.cache = cache
         self.categories = categories
 
         if self.mode == self._HAND:
-            if self.complexity not in [self._HIGH_COMPLEXITY, self._LOW_COMPLEXITY]:
-                raise ValueError(
-                    "Complexity: {} for mode: hands not supported. Supported complexities are: {}".format(
-                        self.complexity,
-                        ", ".join([self._HIGH_COMPLEXITY, self._LOW_COMPLEXITY]),
-                    )
-                )
-
             self.mediapipe_handle = mediapipe.solutions.hands.Hands(
                 static_image_mode=True,
                 max_num_hands=1,
-                model_complexity=0 if self.complexity == self._LOW_COMPLEXITY else 1,
             )
         else:
-            if self.complexity not in [self._HIGH_COMPLEXITY, self._LOW_COMPLEXITY]:
-                raise ValueError(
-                    "Complexity: {} for mode: pose not supported. Supported complexities are: {}".format(
-                        self.complexity,
-                        ", ".join(
-                            [
-                                self._HIGH_COMPLEXITY,
-                                self._LOW_COMPLEXITY,
-                                self._MEDIUM_COMPLEXITY,
-                            ]
-                        ),
-                    )
-                )
-
             self.mediapipe_handle = mediapipe.solutions.pose.Pose(
                 static_image_mode=True,
-                model_complexity={
-                    self._LOW_COMPLEXITY: 0,
-                    self._MEDIUM_COMPLEXITY: 1,
-                    self._HIGH_COMPLEXITY: 2,
-                }[self.complexity],
             )
 
         if self.cache is not None:
@@ -222,7 +185,6 @@ class GestureRecognizer:
         with open(config_path, "w+") as config_fd:
             config = {
                 "mode": self.mode,
-                "complexity": self.complexity,
             }
             json.dump(config, config_fd)
 
@@ -242,5 +204,4 @@ class GestureRecognizer:
             classifier=classifier,
             preprocessor=preprocessor,
             mode=config["mode"],
-            complexity=config["complexity"],
         )
