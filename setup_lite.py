@@ -13,6 +13,6 @@ setup(
     install_requires=[
         "mediapipe==0.8.8.1",
         "numpy==1.19.5",
-        "tflite_runtime==2.5.0",
+        "tflite_runtime>=2.5.0",
     ],
 )
