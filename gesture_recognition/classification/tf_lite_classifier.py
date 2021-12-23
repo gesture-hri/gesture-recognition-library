@@ -1,3 +1,4 @@
+import os.path
 import sys
 
 import numpy as np
@@ -42,15 +43,20 @@ class TFLiteClassifier(TrainableClassifier):
         ]
 
     @classmethod
-    def from_file(cls, tf_lite_model_path):
+    def from_file(cls, gesture_recognizer_path):
+        tf_lite_classifier_path = os.path.join(
+            gesture_recognizer_path, "classifier.tflite"
+        )
         if "tensorflow" in sys.modules:
             import tensorflow
 
-            interpreter = tensorflow.lite.Interpreter(model_path=tf_lite_model_path)
+            interpreter = tensorflow.lite.Interpreter(
+                model_path=tf_lite_classifier_path
+            )
         else:
             from tflite_runtime.interpreter import Interpreter
 
-            interpreter = Interpreter(model_path=tf_lite_model_path)
+            interpreter = Interpreter(model_path=tf_lite_classifier_path)
 
         instance = cls()
         instance.tf_lite_interpreter = interpreter
@@ -147,5 +153,6 @@ class TFLiteClassifier(TrainableClassifier):
         ]
 
     def save_classifier(self, path: str):
-        with open(path, "w+b") as classifier_binary:
+        classifier_path = os.path.join(path, "classifier.tflite")
+        with open(classifier_path, "w+b") as classifier_binary:
             classifier_binary.write(self.tf_lite_model)

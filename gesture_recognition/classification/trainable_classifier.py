@@ -43,3 +43,22 @@ class TrainableClassifier(ABC):
         should be thrown.
         """
         pass
+
+    @abstractmethod
+    def save_classifier(self, path):
+        """
+        This method will be called by GestureRecognizer during saving process.
+        :param path: Path to the directory in which classifier will be saved. Providing appropriate suffix to this path
+        is left for overriding.
+        """
+        pass
+
+    @classmethod
+    @abstractmethod
+    def from_file(cls, path):
+        """
+        :param path: Path to directory from which classifier will be restored. Providing appropriate suffix to this
+        path is left for overriding.
+        :return: TrainableClassifier instance restored from file.
+        """
+        pass

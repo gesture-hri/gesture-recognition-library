@@ -1,3 +1,4 @@
+import os
 import sys
 from typing import List, Tuple, Callable
 
@@ -65,13 +66,11 @@ class TFLitePreprocessor(Preprocessor):
         ]
 
     def save_preprocessor(self, path):
-        """
-        :param path: Path under which serialized TFLitePreprocessor binary will be stored.
-        """
         if self.function_as_tf_lite_model is None:
             raise AttributeError("Trying to serialize already serialized preprocessor")
 
-        with open(path, "w+b") as preprocessor_binary:
+        preprocessor_path = os.path.join(path, "preprocessor.tflite")
+        with open(preprocessor_path, "w+b") as preprocessor_binary:
             preprocessor_binary.write(self.function_as_tf_lite_model)
 
     @classmethod
@@ -101,11 +100,10 @@ class TFLitePreprocessor(Preprocessor):
         return cls(interpreter, function_as_tf_lite_model)
 
     @classmethod
-    def from_file(cls, tf_lite_preprocessor_path):
-        """
-        :param tf_lite_preprocessor_path: Path to binary file containing serialized TFLitePreprocessor instance.
-        :return: TFLitePreprocessor instance, that can used for inference but not re-serialized again.
-        """
+    def from_file(cls, gesture_recognizer_path):
+        tf_lite_preprocessor_path = os.path.join(
+            gesture_recognizer_path, "preprocessor.tflite"
+        )
         if "tensorflow" in sys.modules:
             import tensorflow
 
