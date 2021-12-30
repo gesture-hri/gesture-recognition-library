@@ -12,13 +12,13 @@ class PickleCache(MediapipeCache):
     Derived class of MediapipeCache. Implements simplest type of storage based on pickle library and filesystem
     """
 
-    def __init__(self, root_path):
+    def __init__(self, root_path: str):
         """
         :param root_path: Path to directory you want to store pickled mediapipe outputs in.
         """
         self.root_path = root_path
 
-    def initialize(self, *args, **kwargs):
+    def initialize(self):
         """
         Creates directory specified by root_path attribute if not exists.
         """
@@ -33,7 +33,7 @@ class PickleCache(MediapipeCache):
                 file=file,
             )
 
-    def retrieve_mediapipe_output(self, identifier: str, *args, **kwargs):
+    def retrieve_mediapipe_output(self, identifier: str):
         try:
             with open(os.path.join(self.root_path, identifier) + ".pkl", "rb") as file:
                 return pickle.load(file)
@@ -42,7 +42,7 @@ class PickleCache(MediapipeCache):
                 f"Dataset identified as {identifier} not found in cache"
             )
 
-    def remove_mediapipe_output(self, identifier, *args, **kwargs):
+    def remove_mediapipe_output(self, identifier: str):
         try:
             os.remove(os.path.join(self.root_path, identifier))
         except FileNotFoundError:

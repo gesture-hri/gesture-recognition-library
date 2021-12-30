@@ -198,7 +198,7 @@ class GestureRecognizer:
             return [self.categories[label] for label in classification]
         return classification
 
-    def save_recognizer(self, path):
+    def save_recognizer(self, path: str):
         """
         Serializes recognizer content and stores in directory pointed by path argument.
         :param path: Path under which serialized recognizer content will be stored.
@@ -219,7 +219,7 @@ class GestureRecognizer:
     @classmethod
     def from_recognizer_dir(
         cls,
-        path,
+        path: str,
         classifier_module=TFLiteClassifier,
         preprocessor_module=TFLitePreprocessor,
     ):

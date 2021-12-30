@@ -27,9 +27,7 @@ class TFLitePreprocessor(Preprocessor):
             for meta in self.tf_lite_interpreter.get_output_details()
         ]
 
-    def preprocess(
-        self, landmark_vectors: List[np.ndarray], *args, **kwargs
-    ) -> List[np.ndarray]:
+    def preprocess(self, landmark_vectors: List[np.ndarray]) -> List[np.ndarray]:
         """
         Executes behavior of preprocessing function that was used to create this TFLitePreprocessor instance.
         :param landmark_vectors: List of numpy arrays that represent content and order of arguments of function
@@ -65,11 +63,14 @@ class TFLitePreprocessor(Preprocessor):
             for index, _shape in self.output_meta
         ]
 
-    def save_preprocessor(self, path):
+    def save_preprocessor(self, gesture_recognizer_path: str):
+        """
+        :param gesture_recognizer_path:  Path to the directory under which GestureRecognizer content will be stored.
+        """
         if self.function_as_tf_lite_model is None:
             raise AttributeError("Trying to serialize already serialized preprocessor")
 
-        preprocessor_path = os.path.join(path, "preprocessor.tflite")
+        preprocessor_path = os.path.join(gesture_recognizer_path, "preprocessor.tflite")
         with open(preprocessor_path, "w+b") as preprocessor_binary:
             preprocessor_binary.write(self.function_as_tf_lite_model)
 
@@ -100,7 +101,11 @@ class TFLitePreprocessor(Preprocessor):
         return cls(interpreter, function_as_tf_lite_model)
 
     @classmethod
-    def from_file(cls, gesture_recognizer_path):
+    def from_file(cls, gesture_recognizer_path: str):
+        """
+        :param gesture_recognizer_path: Path to the directory from which GestureRecognizer content will be restored.
+        :return: Instantiated preprocessor ready to run preprocessing.
+        """
         tf_lite_preprocessor_path = os.path.join(
             gesture_recognizer_path, "preprocessor.tflite"
         )
