@@ -45,10 +45,6 @@ class TFLiteClassifier(TrainableClassifier):
 
     @classmethod
     def from_file(cls, gesture_recognizer_path: str):
-        """
-        :param gesture_recognizer_path: Path to the directory from which GestureRecognizer content will be restored.
-        :return: Instantiated classifier ready to run inference.
-        """
         tf_lite_classifier_path = os.path.join(
             gesture_recognizer_path, "classifier.tflite"
         )
@@ -84,9 +80,7 @@ class TFLiteClassifier(TrainableClassifier):
         x_reshaped = [np.array(input_samples) for input_samples in x_reshaped]
         return x_reshaped, np.array(y)
 
-    def train(
-        self, samples: List[np.ndarray], labels: List[np.int]
-    ) -> Union[np.float, List[np.float]]:
+    def train(self, samples: List[np.ndarray], labels: List[np.int]):
         if self.keras_model is None or self.training_params is None:
             raise AttributeError(
                 "TFLiteClassifier instances that were not instantiated via constructor cannot be trained."
@@ -117,9 +111,7 @@ class TFLiteClassifier(TrainableClassifier):
         self._setup_interpreter_meta()
         return score
 
-    def evaluate(
-        self, samples: List[np.ndarray], labels: List[np.int]
-    ) -> Union[np.float, List[np.float]]:
+    def evaluate(self, samples: List[np.ndarray], labels: List[np.int]):
         _, score = self.keras_model.evaluate(samples, labels)
         return score
 
@@ -162,9 +154,6 @@ class TFLiteClassifier(TrainableClassifier):
         ]
 
     def save_classifier(self, gesture_recognizer_path: str):
-        """
-        :param gesture_recognizer_path: Path to the directory under which GestureRecognizer content will be stored.
-        """
         classifier_path = os.path.join(gesture_recognizer_path, "classifier.tflite")
         with open(classifier_path, "w+b") as classifier_binary:
             classifier_binary.write(self.tf_lite_model)

@@ -64,9 +64,6 @@ class TFLitePreprocessor(Preprocessor):
         ]
 
     def save_preprocessor(self, gesture_recognizer_path: str):
-        """
-        :param gesture_recognizer_path:  Path to the directory under which GestureRecognizer content will be stored.
-        """
         if self.function_as_tf_lite_model is None:
             raise AttributeError("Trying to serialize already serialized preprocessor")
 
@@ -102,10 +99,6 @@ class TFLitePreprocessor(Preprocessor):
 
     @classmethod
     def from_file(cls, gesture_recognizer_path: str):
-        """
-        :param gesture_recognizer_path: Path to the directory from which GestureRecognizer content will be restored.
-        :return: Instantiated preprocessor ready to run preprocessing.
-        """
         tf_lite_preprocessor_path = os.path.join(
             gesture_recognizer_path, "preprocessor.tflite"
         )
