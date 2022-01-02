@@ -4,10 +4,10 @@ from typing import List
 
 import numpy as np
 
-from gesture_recognition.mediapipe_cache.mediapipe_cache import MediapipeCache
+from gesture_recognition.mediapipe_cache.mediapipe_cache import MediaPipeCache
 
 
-class PickleCache(MediapipeCache):
+class PickleCache(MediaPipeCache):
     """
     Derived class of MediapipeCache. Implements simplest type of storage based on pickle library and filesystem
     """
@@ -22,7 +22,7 @@ class PickleCache(MediapipeCache):
         """
         Creates directory specified by root_path attribute if not exists.
         """
-        os.makedirs(self.root_path, os.O_RDWR, exist_ok=True)
+        os.makedirs(self.root_path, exist_ok=True)
 
     def store_mediapipe_output(
         self, samples: List[np.ndarray], labels: List[np.ndarray], identifier: str
@@ -38,7 +38,7 @@ class PickleCache(MediapipeCache):
             with open(os.path.join(self.root_path, identifier) + ".pkl", "rb") as file:
                 return pickle.load(file)
         except FileNotFoundError:
-            raise MediapipeCache.Error(
+            raise MediaPipeCache.Error(
                 f"Dataset identified as {identifier} not found in cache"
             )
 
@@ -46,6 +46,6 @@ class PickleCache(MediapipeCache):
         try:
             os.remove(os.path.join(self.root_path, identifier))
         except FileNotFoundError:
-            raise MediapipeCache.Error(
+            raise MediaPipeCache.Error(
                 f"Dataset identified as {identifier} not found in cache"
             )

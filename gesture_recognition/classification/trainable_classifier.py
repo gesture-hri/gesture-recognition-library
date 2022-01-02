@@ -18,20 +18,20 @@ class TrainableClassifier(ABC):
 
     @abstractmethod
     def train(
-        self, samples: List[np.ndarray], labels: List[np.ndarray]
+        self, samples: List[np.ndarray], labels: List[np.int]
     ) -> Union[np.float, List[np.float]]:
         """
         This method will be called by GestureRecognizer to train and evaluate its top classifier
         to semantic preprocessing output.
         :param samples: Raw images in numpy array format.
         :param labels: Categories corresponding to images from samples.
-        :return: Keras model evaluation result on samples fraction used for testing.
+        :return: Machine learning model evaluation result on samples fraction used for testing.
         """
         pass
 
     @abstractmethod
     def evaluate(
-        self, samples: List[np.ndarray], labels: List[np.ndarray]
+        self, samples: List[np.ndarray], labels: List[np.int]
     ) -> Union[np.float, List[np.float]]:
         """
         This method will be called by GestureRecognizer to evaluate its top classifier on semantic preprocessing output.

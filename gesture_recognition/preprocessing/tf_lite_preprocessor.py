@@ -1,6 +1,6 @@
 import os
 import sys
-from typing import List, Tuple, Callable
+from typing import List, Tuple, Callable, Union
 
 import numpy as np
 
@@ -10,7 +10,7 @@ from gesture_recognition.preprocessing.preprocessor import Preprocessor
 class TFLitePreprocessor(Preprocessor):
     def __init__(self, tf_lite_interpreter, function_as_tf_lite_model=None):
         """
-        :param tf_lite_interpreter: TensorflowLite runtime interpreter created from appropriate preprocessing function
+        :param tf_lite_interpreter: TensorFlow Lite runtime interpreter created from appropriate preprocessing function
         :param function_as_tf_lite_model: This argument will be specified only when creating preprocessor from function.
         It will be used to create binary file when serializing mode. Instances created from binary file will not have
         this attribute set, thus .save_preprocessor() cannot be called on them.
@@ -73,7 +73,9 @@ class TFLitePreprocessor(Preprocessor):
 
     @classmethod
     def from_function(
-        cls, function: Callable[..., np.ndarray], input_shapes: List[Tuple[int, ...]]
+        cls,
+        function: Callable[..., Union[np.ndarray, List[np.ndarray]]],
+        input_shapes: List[Tuple[int, ...]],
     ):
         """
         :param function: Preprocessing function that takes arbitrary number of numpy array as arguments, and

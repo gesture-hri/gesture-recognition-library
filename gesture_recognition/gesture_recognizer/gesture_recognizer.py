@@ -7,7 +7,7 @@ import mediapipe
 import numpy as np
 
 from gesture_recognition.classification import TrainableClassifier, TFLiteClassifier
-from gesture_recognition.mediapipe_cache import MediapipeCache
+from gesture_recognition.mediapipe_cache import MediaPipeCache
 from gesture_recognition.preprocessing import Preprocessor, TFLitePreprocessor
 
 logger = logging.getLogger("gesture recognizer")
@@ -34,7 +34,7 @@ class GestureRecognizer:
         self,
         classifier: TrainableClassifier,
         preprocessor: Preprocessor,
-        cache: MediapipeCache = None,
+        cache: MediaPipeCache = None,
         categories: List[any] = None,
         mode: str = _HAND,
         complexity: str = _LOW_COMPLEXITY,
@@ -154,7 +154,7 @@ class GestureRecognizer:
         identifier: str = None,
         samples: Iterable[np.ndarray] = None,
         labels: Iterable[np.int] = None,
-    ):
+    ) -> Union[np.float, List[np.float]]:
         """
         Trains and evaluates top classifier.
         :param samples: Raw images in numpy array format.
@@ -168,7 +168,7 @@ class GestureRecognizer:
         try:
             x, y = self.cache.retrieve_mediapipe_output(identifier)
             logger.info(f"Dataset identified as {identifier} found in cache.")
-        except (MediapipeCache.Error, AttributeError):
+        except (MediaPipeCache.Error, AttributeError):
             x = [self._image_flow(sample) for sample in samples]
             y = [label for idx, label in enumerate(labels) if x[idx] is not None]
             x = [sample for sample in x if sample is not None]
@@ -181,7 +181,7 @@ class GestureRecognizer:
         logger.info(f"Using {len(x)} samples for training and evaluation")
         return self.classifier.train(x, y)
 
-    def recognize(self, image: np.ndarray):
+    def recognize(self, image: np.ndarray) -> Union[List[int], List[any], None]:
         """
         Recognizes gesture present on image.
         :param image: Image with gesture to be recognized.

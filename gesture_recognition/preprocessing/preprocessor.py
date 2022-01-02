@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Union
 
 import numpy as np
 
@@ -10,12 +10,14 @@ class Preprocessor(ABC):
     """
 
     @abstractmethod
-    def preprocess(self, landmark_vectors: List[np.ndarray]) -> List[np.ndarray]:
+    def preprocess(
+        self, landmark_vectors: List[np.ndarray]
+    ) -> Union[np.ndarray, List[np.ndarray]]:
         """
         This method will be called on numpy array that represent mediapipe output
         to perform additional semantic preprocessing.
         :param landmark_vectors: List of numpy arrays with 3D body joint positions estimated by MediaPipe
-        :return: List of numpy arrays being feature matrices.
+        :return: Numpy array(s) being feature matrix(ces).
         """
         pass
 
