@@ -1,11 +1,11 @@
-from typing import Callable, Dict, List
+from typing import Callable, Dict, List, Union
 
 import numpy as np
 import tensorflow as tf
 
 from gesture_recognition.classification import TFLiteClassifier
 from gesture_recognition.gesture_recognizer.gesture_recognizer import GestureRecognizer
-from gesture_recognition.mediapipe_cache import MediapipeCache
+from gesture_recognition.mediapipe_cache import MediaPipeCache
 from gesture_recognition.preprocessing import TFLitePreprocessor
 from gesture_recognition.preprocessing.preprocessing_functions import (
     default_preprocessing,
@@ -82,7 +82,9 @@ class GestureRecognizerBuilder:
         self.complexity = complexity
         return self
 
-    def set_preprocessing(self, preprocessing: Callable[..., np.ndarray]):
+    def set_preprocessing(
+        self, preprocessing: Callable[..., Union[np.ndarray, List[np.ndarray]]]
+    ):
         """
         :param preprocessing: Preprocessing function that takes arbitrary number of numpy array as arguments, and
         returns single numpy array or tuple of arbitrary number of numpy arrays as a result.
@@ -128,7 +130,7 @@ class GestureRecognizerBuilder:
         self.categories = categories
         return self
 
-    def set_cache(self, cache: MediapipeCache):
+    def set_cache(self, cache: MediaPipeCache):
         """
         :param cache: MediapipeCache instance responsible for storage of mediapipe application
         result on training dataset.

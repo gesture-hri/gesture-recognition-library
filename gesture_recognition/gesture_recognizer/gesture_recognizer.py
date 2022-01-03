@@ -7,7 +7,7 @@ import mediapipe
 import numpy as np
 
 from gesture_recognition.classification import TrainableClassifier, TFLiteClassifier
-from gesture_recognition.mediapipe_cache import MediapipeCache
+from gesture_recognition.mediapipe_cache import MediaPipeCache
 from gesture_recognition.preprocessing import Preprocessor, TFLitePreprocessor
 
 logger = logging.getLogger("gesture recognizer")
@@ -34,7 +34,7 @@ class GestureRecognizer:
         self,
         classifier: TrainableClassifier,
         preprocessor: Preprocessor,
-        cache: MediapipeCache = None,
+        cache: MediaPipeCache = None,
         categories: List[any] = None,
         mode: str = _HAND,
         complexity: str = _LOW_COMPLEXITY,
@@ -154,7 +154,7 @@ class GestureRecognizer:
         identifier: str = None,
         samples: Iterable[np.ndarray] = None,
         labels: Iterable[np.int] = None,
-    ):
+    ) -> Union[np.float, List[np.float]]:
         """
         Trains and evaluates top classifier.
         :param samples: Raw images in numpy array format.
@@ -168,7 +168,7 @@ class GestureRecognizer:
         try:
             x, y = self.cache.retrieve_mediapipe_output(identifier)
             logger.info(f"Dataset identified as {identifier} found in cache.")
-        except (MediapipeCache.Error, AttributeError):
+        except (MediaPipeCache.Error, AttributeError):
             x = [self._image_flow(sample) for sample in samples]
             y = [label for idx, label in enumerate(labels) if x[idx] is not None]
             x = [sample for sample in x if sample is not None]
@@ -181,7 +181,7 @@ class GestureRecognizer:
         logger.info(f"Using {len(x)} samples for training and evaluation")
         return self.classifier.train(x, y)
 
-    def recognize(self, image: np.ndarray):
+    def recognize(self, image: np.ndarray) -> Union[List[int], List[any], None]:
         """
         Recognizes gesture present on image.
         :param image: Image with gesture to be recognized.
@@ -198,27 +198,17 @@ class GestureRecognizer:
             return [self.categories[label] for label in classification]
         return classification
 
-    def save_recognizer(self, path):
-        if not isinstance(self.classifier, TFLiteClassifier):
-            raise AttributeError(
-                "Attribute `classifier` must be instance of TFLiteClassifier class to save recognizer using "
-                "this method. Override it if you are working with custom TrainableClassifier derived class."
-            )
+    def save_recognizer(self, path: str):
+        """
+        Serializes recognizer content and stores in directory pointed by path argument.
+        :param path: Path under which serialized recognizer content will be stored.
+        """
+        os.makedirs(path, exist_ok=True)
 
-        if not isinstance(self.preprocessor, TFLitePreprocessor):
-            raise AttributeError(
-                "Attribute `preprocessor` must be instance of TFLitePreprocessor class to save recognizer using "
-                "this method. Override it if you are working with custom Preprocessor derived class."
-            )
-
-        os.makedirs(path, os.O_RDWR, exist_ok=True)
-
-        classifier_path = os.path.join(path, "classifier.tflite")
-        preprocessor_path = os.path.join(path, "preprocessor.tflite")
         config_path = os.path.join(path, "config.json")
 
-        self.classifier.save_classifier(classifier_path)
-        self.preprocessor.save_preprocessor(preprocessor_path)
+        self.classifier.save_classifier(path)
+        self.preprocessor.save_preprocessor(path)
         with open(config_path, "w+") as config_fd:
             config = {
                 "mode": self.mode,
@@ -227,13 +217,23 @@ class GestureRecognizer:
             json.dump(config, config_fd)
 
     @classmethod
-    def from_recognizer_dir(cls, path):
-        classifier_path = os.path.join(path, "classifier.tflite")
-        preprocessor_path = os.path.join(path, "preprocessor.tflite")
+    def from_recognizer_dir(
+        cls,
+        path: str,
+        classifier_module=TFLiteClassifier,
+        preprocessor_module=TFLitePreprocessor,
+    ):
+        """
+        Deserializes recognizer content from directory pointed by path argument and uses it to instantiate recognizer.
+        :param path: Path from which recognizer content will be restored.
+        :param classifier_module: TrainableClassifier derived class with 'from_file' method implementation.
+        :param preprocessor_module: Preprocessor derived class with 'from_file' method implementation.
+        :return: Restored GestureRecognizer instance that has been previously saved.
+        """
         config_path = os.path.join(path, "config.json")
 
-        classifier = TFLiteClassifier.from_file(classifier_path)
-        preprocessor = TFLitePreprocessor.from_file(preprocessor_path)
+        classifier = classifier_module.from_file(path)
+        preprocessor = preprocessor_module.from_file(path)
 
         with open(config_path, "rb") as config_fd:
             config = json.load(config_fd)

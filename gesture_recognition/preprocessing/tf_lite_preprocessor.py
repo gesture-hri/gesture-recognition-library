@@ -1,5 +1,6 @@
+import os
 import sys
-from typing import List, Tuple, Callable
+from typing import List, Tuple, Callable, Union
 
 import numpy as np
 
@@ -9,7 +10,7 @@ from gesture_recognition.preprocessing.preprocessor import Preprocessor
 class TFLitePreprocessor(Preprocessor):
     def __init__(self, tf_lite_interpreter, function_as_tf_lite_model=None):
         """
-        :param tf_lite_interpreter: TensorflowLite runtime interpreter created from appropriate preprocessing function
+        :param tf_lite_interpreter: TensorFlow Lite runtime interpreter created from appropriate preprocessing function
         :param function_as_tf_lite_model: This argument will be specified only when creating preprocessor from function.
         It will be used to create binary file when serializing mode. Instances created from binary file will not have
         this attribute set, thus .save_preprocessor() cannot be called on them.
@@ -26,9 +27,7 @@ class TFLitePreprocessor(Preprocessor):
             for meta in self.tf_lite_interpreter.get_output_details()
         ]
 
-    def preprocess(
-        self, landmark_vectors: List[np.ndarray], *args, **kwargs
-    ) -> List[np.ndarray]:
+    def preprocess(self, landmark_vectors: List[np.ndarray]) -> List[np.ndarray]:
         """
         Executes behavior of preprocessing function that was used to create this TFLitePreprocessor instance.
         :param landmark_vectors: List of numpy arrays that represent content and order of arguments of function
@@ -64,19 +63,19 @@ class TFLitePreprocessor(Preprocessor):
             for index, _shape in self.output_meta
         ]
 
-    def save_preprocessor(self, path):
-        """
-        :param path: Path under which serialized TFLitePreprocessor binary will be stored.
-        """
+    def save_preprocessor(self, gesture_recognizer_path: str):
         if self.function_as_tf_lite_model is None:
             raise AttributeError("Trying to serialize already serialized preprocessor")
 
-        with open(path, "w+b") as preprocessor_binary:
+        preprocessor_path = os.path.join(gesture_recognizer_path, "preprocessor.tflite")
+        with open(preprocessor_path, "w+b") as preprocessor_binary:
             preprocessor_binary.write(self.function_as_tf_lite_model)
 
     @classmethod
     def from_function(
-        cls, function: Callable[..., np.ndarray], input_shapes: List[Tuple[int, ...]]
+        cls,
+        function: Callable[..., Union[np.ndarray, List[np.ndarray]]],
+        input_shapes: List[Tuple[int, ...]],
     ):
         """
         :param function: Preprocessing function that takes arbitrary number of numpy array as arguments, and
@@ -101,11 +100,10 @@ class TFLitePreprocessor(Preprocessor):
         return cls(interpreter, function_as_tf_lite_model)
 
     @classmethod
-    def from_file(cls, tf_lite_preprocessor_path):
-        """
-        :param tf_lite_preprocessor_path: Path to binary file containing serialized TFLitePreprocessor instance.
-        :return: TFLitePreprocessor instance, that can used for inference but not re-serialized again.
-        """
+    def from_file(cls, gesture_recognizer_path: str):
+        tf_lite_preprocessor_path = os.path.join(
+            gesture_recognizer_path, "preprocessor.tflite"
+        )
         if "tensorflow" in sys.modules:
             import tensorflow
 
