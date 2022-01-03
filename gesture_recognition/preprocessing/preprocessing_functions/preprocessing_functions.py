@@ -19,3 +19,17 @@ def default_preprocessing(array: np.ndarray):
 def euclidean_preprocessing(array: np.ndarray):
     distances = tf.norm((array[:, None] - array), axis=2)
     return tf.reshape(_normalize_array(distances), (-1,))
+
+
+def l1_preprocessing(array: np.ndarray):
+    distances = tf.norm((array[:, None] - array), axis=2, ord=1)
+    return tf.reshape(_normalize_array(distances), (-1,))
+
+
+def cosine_preprocessing(array: np.ndarray):
+    normalized = array / tf.reshape(tf.norm(array, axis=1), (-1, 1))
+    cosine_similarity = tf.linalg.matmul(normalized, normalized, transpose_b=True)
+    normalized_cosine_similarity = _normalize_array(cosine_similarity)
+    return tf.subtract(
+        tf.ones(shape=cosine_similarity.shape), normalized_cosine_similarity
+    )
