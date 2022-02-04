@@ -12,7 +12,7 @@ keras = "^2.6.0"
 mediapipe = "0.8.9"
 opencv-python = "^4.5.2"
 numpy = "^1.12.1"
-Pillow = "^8.4.0"
+Pillow = "^9.0.1"
 tflite-runtime = "2.5.0"
 sklearn = "^0.0"
 
