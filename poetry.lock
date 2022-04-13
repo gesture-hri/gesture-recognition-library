@@ -693,19 +693,14 @@ python-versions = "*"
 
 [[package]]
 name = "tflite-runtime"
-version = "2.5.0"
+version = "2.8.0"
 description = "TensorFlow Lite is for mobile and embedded devices."
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-numpy = ">=1.12.1"
-
-[package.source]
-type = "legacy"
-url = "https://google-coral.github.io/py-repo"
-reference = "tflite-py-repo"
+numpy = ">=1.19.2"
 
 [[package]]
 name = "threadpoolctl"
@@ -774,7 +769,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b681f785fe8707023fcdbd0779a67e400e9a86b0ef4143e0b6f97059e2aea028"
+content-hash = "67c85ae746085c10f7006770e587acd84d60126862726dd21b530536e39d1a76"
 
 [metadata.files]
 absl-py = [
@@ -1373,46 +1368,15 @@ termcolor = [
     {file = "termcolor-1.1.0.tar.gz", hash = "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"},
 ]
 tflite-runtime = [
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-linux_aarch64.whl", hash = "sha256:358ba7558711ef451192fe5d34e369df686012885a08c99d63c3ada91aeb0f18"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-linux_aarch64.whl", hash = "sha256:358ba7558711ef451192fe5d34e369df686012885a08c99d63c3ada91aeb0f18"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-linux_armv7l.whl", hash = "sha256:22c89432aaeb02bd238f34be3f33a65db4b10697180594886a4530e8a0263f89"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-linux_armv7l.whl", hash = "sha256:22c89432aaeb02bd238f34be3f33a65db4b10697180594886a4530e8a0263f89"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-linux_x86_64.whl", hash = "sha256:8531bdd3f21c94d4953128a73b9df5bf39e93ba67c2a70e6daf572849ca388b1"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-linux_x86_64.whl", hash = "sha256:8531bdd3f21c94d4953128a73b9df5bf39e93ba67c2a70e6daf572849ca388b1"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-macosx_10_15_x86_64.whl", hash = "sha256:390095b6b53b5d70b5e72b1798c4388a0d3d029444da6ac276c764bcaaea30f3"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-macosx_10_15_x86_64.whl", hash = "sha256:390095b6b53b5d70b5e72b1798c4388a0d3d029444da6ac276c764bcaaea30f3"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-win_amd64.whl", hash = "sha256:403f35b5a2020fc72a21dfa19045459c1d0ce9c94eb05e4c206528cd0be41a33"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-win_amd64.whl", hash = "sha256:403f35b5a2020fc72a21dfa19045459c1d0ce9c94eb05e4c206528cd0be41a33"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-linux_aarch64.whl", hash = "sha256:6bf0ff08f91a3bbd59dd7e26a12b3072949cb4d2d37b9d8cc512a305dfd4351f"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-linux_aarch64.whl", hash = "sha256:6bf0ff08f91a3bbd59dd7e26a12b3072949cb4d2d37b9d8cc512a305dfd4351f"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-linux_armv7l.whl", hash = "sha256:ccbae67bdb6915eb104d1256efd7f79e34ab8faf4e1b8621a71f5226b2156948"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-linux_armv7l.whl", hash = "sha256:ccbae67bdb6915eb104d1256efd7f79e34ab8faf4e1b8621a71f5226b2156948"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-linux_x86_64.whl", hash = "sha256:8f7bbf7660a12b25b52f9c4d636d7c0dbc36e0fc02d974179c573b52f9239e63"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-linux_x86_64.whl", hash = "sha256:8f7bbf7660a12b25b52f9c4d636d7c0dbc36e0fc02d974179c573b52f9239e63"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-macosx_10_15_x86_64.whl", hash = "sha256:00ef2ff6f8e59f7313104badeefeb7a788cd0389b1cfe1841e9d2492313fa33a"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-macosx_10_15_x86_64.whl", hash = "sha256:00ef2ff6f8e59f7313104badeefeb7a788cd0389b1cfe1841e9d2492313fa33a"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-win_amd64.whl", hash = "sha256:c28eb9813a437d1cba202f16809701cad6e08af5e78625b36106cecefd9a33b4"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-win_amd64.whl", hash = "sha256:c28eb9813a437d1cba202f16809701cad6e08af5e78625b36106cecefd9a33b4"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-linux_aarch64.whl", hash = "sha256:848c7719cb43dda4b3df8899b34bc6f070bbc10676266a735b485336153ad219"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-linux_aarch64.whl", hash = "sha256:848c7719cb43dda4b3df8899b34bc6f070bbc10676266a735b485336153ad219"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-linux_armv7l.whl", hash = "sha256:1b448604c3f04eea05fef02cb6fbd9377ae5875acb16d27fe029b5c51749dfde"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-linux_armv7l.whl", hash = "sha256:1b448604c3f04eea05fef02cb6fbd9377ae5875acb16d27fe029b5c51749dfde"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-linux_x86_64.whl", hash = "sha256:a51f02c811c32dd8d9a003f9b6451734598e47f99d69ef35f9b6ced90517a016"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-linux_x86_64.whl", hash = "sha256:a51f02c811c32dd8d9a003f9b6451734598e47f99d69ef35f9b6ced90517a016"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:fb2f8d597a52c607bea2f060b0cc013abd9e8a7d5b58dea0a908ad0088608105"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:fb2f8d597a52c607bea2f060b0cc013abd9e8a7d5b58dea0a908ad0088608105"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-win_amd64.whl", hash = "sha256:3c612b47c4fdca34c7914889aaf5a82efc227ef3cf858623d1072c237158fe0e"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-win_amd64.whl", hash = "sha256:3c612b47c4fdca34c7914889aaf5a82efc227ef3cf858623d1072c237158fe0e"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-linux_aarch64.whl", hash = "sha256:b87a4c152be05d3585521a1d5418f7645a4fb82965772489b983e93aae6bd9ac"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-linux_aarch64.whl", hash = "sha256:b87a4c152be05d3585521a1d5418f7645a4fb82965772489b983e93aae6bd9ac"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-linux_armv7l.whl", hash = "sha256:953f6b7e2a6679c39b95ef7957a6bd78fff4b5e0dd78244599cfa78037e19953"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-linux_armv7l.whl", hash = "sha256:953f6b7e2a6679c39b95ef7957a6bd78fff4b5e0dd78244599cfa78037e19953"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-linux_x86_64.whl", hash = "sha256:ad9f5a127cfad78af207c0f17b303ebf76099775d423115d81e06518209ce459"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-linux_x86_64.whl", hash = "sha256:ad9f5a127cfad78af207c0f17b303ebf76099775d423115d81e06518209ce459"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:a47cc42ed271d00c00ad5f1b4b2e9eec0e59e2903b3d71a3fa59faff0896c094"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:a47cc42ed271d00c00ad5f1b4b2e9eec0e59e2903b3d71a3fa59faff0896c094"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-win_amd64.whl", hash = "sha256:efcd5605885811b5a967494fdc64bb18b5fde145db12ded3e886fcc42b3666fa"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-win_amd64.whl", hash = "sha256:efcd5605885811b5a967494fdc64bb18b5fde145db12ded3e886fcc42b3666fa"},
+    {file = "tflite_runtime-2.8.0-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:ff4d0518d4500fa2af8693ca637e7e2240e242a281038105061ca9700570cc7a"},
+    {file = "tflite_runtime-2.8.0-cp37-cp37m-manylinux2014_armv7l.whl", hash = "sha256:2caab6b848637c23158ee4979006ff20d45a5a20dd96e5485ef887fe855465e8"},
+    {file = "tflite_runtime-2.8.0-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:1a1be1a21711ee85ae83364b8fb8eeb228cdac8e35f97f4eb0cdf3f761f4baad"},
+    {file = "tflite_runtime-2.8.0-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:6d8c0f7febe5a973e995348696aa1d8e81e4fa337922e8a8a13abd436c7b3c1f"},
+    {file = "tflite_runtime-2.8.0-cp38-cp38-manylinux2014_armv7l.whl", hash = "sha256:fb7b6c2c92c6392d6e555f8eb87de8bad6330597f38af967f65c567338c512bd"},
+    {file = "tflite_runtime-2.8.0-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:9508a3252f5be251c07fd7ad61d904ed6cc5aea28c54ff081253550011223ce1"},
+    {file = "tflite_runtime-2.8.0-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:b6d3ea699edb3a98c3e2454223c31a8a23611830d2441667abc4da85e5370eab"},
+    {file = "tflite_runtime-2.8.0-cp39-cp39-manylinux2014_armv7l.whl", hash = "sha256:24a1f35a671a452b5576faf162bf0a5654ebbd2e69ddd69f2782686e6438ccd5"},
+    {file = "tflite_runtime-2.8.0-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:cb3846d3deb6bee806e6435e0e2e448c5a5cb5c8e7c1e0a302f5797a4bf985ba"},
 ]
 threadpoolctl = [
     {file = "threadpoolctl-3.0.0-py3-none-any.whl", hash = "sha256:4fade5b3b48ae4b1c30f200b28f39180371104fccc642e039e0f2435ec8cc211"},
