@@ -7,7 +7,7 @@ packages = [{ include = "gesture_recognition" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-tensorflow = "^2.6.2"
+tensorflow = "^2.6.4"
 keras = "^2.6.0"
 mediapipe = "0.8.9"
 opencv-python = "^4.5.2"
