@@ -27,6 +27,7 @@ python-versions = "*"
 
 [package.dependencies]
 six = ">=1.6.1,<2.0"
+wheel = ">=0.23.0,<1.0"
 
 [[package]]
 name = "atomicwrites"
@@ -45,10 +46,10 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.extras]
-dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "zope.interface", "furo", "sphinx", "sphinx-notfound-page", "pre-commit"]
-docs = ["furo", "sphinx", "zope.interface", "sphinx-notfound-page"]
-tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "zope.interface"]
-tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins"]
+dev = ["coverage[toml] (>=5.0.2)", "furo", "hypothesis", "mypy", "pre-commit", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "six", "sphinx", "sphinx-notfound-page", "zope.interface"]
+docs = ["furo", "sphinx", "sphinx-notfound-page", "zope.interface"]
+tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "mypy", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "six", "zope.interface"]
+tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "mypy", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "six"]
 
 [[package]]
 name = "black"
@@ -165,10 +166,11 @@ python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*"
 cachetools = ">=2.0.0,<5.0"
 pyasn1-modules = ">=0.2.1"
 rsa = {version = ">=3.1.4,<5", markers = "python_version >= \"3.6\""}
+setuptools = ">=40.3.0"
 six = ">=1.9.0"
 
 [package.extras]
-aiohttp = ["requests (>=2.20.0,<3.0.0dev)", "aiohttp (>=3.6.2,<4.0.0dev)"]
+aiohttp = ["aiohttp (>=3.6.2,<4.0.0dev)", "requests (>=2.20.0,<3.0.0dev)"]
 pyopenssl = ["pyopenssl (>=20.0.0)"]
 reauth = ["pyu2f (>=0.1.5)"]
 
@@ -271,9 +273,9 @@ numpy = ">=1.9.1"
 six = ">=1.9.0"
 
 [package.extras]
-image = ["scipy (>=0.14)", "Pillow (>=5.2.0)"]
+image = ["Pillow (>=5.2.0)", "scipy (>=0.14)"]
 pep8 = ["flake8"]
-tests = ["pandas", "pillow", "tensorflow", "keras", "pytest", "pytest-xdist", "pytest-cov"]
+tests = ["Pillow", "keras", "pandas", "pytest", "pytest-cov", "pytest-xdist", "tensorflow"]
 
 [[package]]
 name = "kiwisolver"
@@ -326,6 +328,7 @@ numpy = "*"
 opencv-contrib-python = "*"
 protobuf = ">=3.11.4"
 six = "*"
+wheel = "*"
 
 [[package]]
 name = "mypy-extensions"
@@ -390,7 +393,7 @@ python-versions = ">=3.5"
 numpy = ">=1.7"
 
 [package.extras]
-docs = ["sphinx (==1.2.3)", "sphinxcontrib-napoleon", "sphinx-rtd-theme", "numpydoc"]
+docs = ["numpydoc", "sphinx (==1.2.3)", "sphinx-rtd-theme", "sphinxcontrib-napoleon"]
 tests = ["pytest", "pytest-cov", "pytest-pep8"]
 
 [[package]]
@@ -574,10 +577,10 @@ scipy = ">=1.1.0"
 threadpoolctl = ">=2.0.0"
 
 [package.extras]
-benchmark = ["matplotlib (>=2.2.3)", "pandas (>=0.25.0)", "memory-profiler (>=0.57.0)"]
-docs = ["matplotlib (>=2.2.3)", "scikit-image (>=0.14.5)", "pandas (>=0.25.0)", "seaborn (>=0.9.0)", "memory-profiler (>=0.57.0)", "sphinx (>=4.0.1)", "sphinx-gallery (>=0.7.0)", "numpydoc (>=1.0.0)", "Pillow (>=7.1.2)", "sphinx-prompt (>=1.3.0)", "sphinxext-opengraph (>=0.4.2)"]
-examples = ["matplotlib (>=2.2.3)", "scikit-image (>=0.14.5)", "pandas (>=0.25.0)", "seaborn (>=0.9.0)"]
-tests = ["matplotlib (>=2.2.3)", "scikit-image (>=0.14.5)", "pandas (>=0.25.0)", "pytest (>=5.0.1)", "pytest-cov (>=2.9.0)", "flake8 (>=3.8.2)", "black (>=21.6b0)", "mypy (>=0.770)", "pyamg (>=4.0.0)"]
+benchmark = ["matplotlib (>=2.2.3)", "memory-profiler (>=0.57.0)", "pandas (>=0.25.0)"]
+docs = ["Pillow (>=7.1.2)", "matplotlib (>=2.2.3)", "memory-profiler (>=0.57.0)", "numpydoc (>=1.0.0)", "pandas (>=0.25.0)", "scikit-image (>=0.14.5)", "seaborn (>=0.9.0)", "sphinx (>=4.0.1)", "sphinx-gallery (>=0.7.0)", "sphinx-prompt (>=1.3.0)", "sphinxext-opengraph (>=0.4.2)"]
+examples = ["matplotlib (>=2.2.3)", "pandas (>=0.25.0)", "scikit-image (>=0.14.5)", "seaborn (>=0.9.0)"]
+tests = ["black (>=21.6b0)", "flake8 (>=3.8.2)", "matplotlib (>=2.2.3)", "mypy (>=0.770)", "pandas (>=0.25.0)", "pyamg (>=4.0.0)", "pytest (>=5.0.1)", "pytest-cov (>=2.9.0)", "scikit-image (>=0.14.5)"]
 
 [[package]]
 name = "scipy"
@@ -589,6 +592,19 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 numpy = ">=1.16.5"
+
+[[package]]
+name = "setuptools"
+version = "65.3.0"
+description = "Easily download, build, install, upgrade, and uninstall Python packages"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
+testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8 (<5)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "mock", "pip (>=19.1)", "pip-run (>=8.8)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
+testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
 [[package]]
 name = "six"
@@ -626,9 +642,11 @@ markdown = ">=2.6.8"
 numpy = ">=1.12.0"
 protobuf = ">=3.6.0"
 requests = ">=2.21.0,<3"
+setuptools = ">=41.0.0"
 tensorboard-data-server = ">=0.6.0,<0.7.0"
 tensorboard-plugin-wit = ">=1.6.0"
 werkzeug = ">=0.11.15"
+wheel = ">=0.26"
 
 [[package]]
 name = "tensorboard-data-server"
@@ -673,6 +691,7 @@ tensorboard = ">=2.6.0,<2.7"
 tensorflow-estimator = ">=2.6.0,<2.7"
 termcolor = ">=1.1.0,<1.2.0"
 typing-extensions = ">=3.7.4,<3.8.0"
+wheel = ">=0.35,<1.0"
 wrapt = ">=1.12.1,<1.13.0"
 
 [[package]]
@@ -693,19 +712,14 @@ python-versions = "*"
 
 [[package]]
 name = "tflite-runtime"
-version = "2.5.0"
+version = "2.10.0"
 description = "TensorFlow Lite is for mobile and embedded devices."
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-numpy = ">=1.12.1"
-
-[package.source]
-type = "legacy"
-url = "https://google-coral.github.io/py-repo"
-reference = "tflite-py-repo"
+numpy = ">=1.19.2"
 
 [[package]]
 name = "threadpoolctl"
@@ -749,7 +763,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
 
 [package.extras]
 brotli = ["brotlipy (>=0.6.0)"]
-secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
+secure = ["certifi", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "ipaddress", "pyOpenSSL (>=0.14)"]
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
@@ -764,6 +778,17 @@ python-versions = ">=3.6"
 watchdog = ["watchdog"]
 
 [[package]]
+name = "wheel"
+version = "0.37.1"
+description = "A built-package format for Python"
+category = "main"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
+
+[package.extras]
+test = ["pytest (>=3.0.0)", "pytest-cov"]
+
+[[package]]
 name = "wrapt"
 version = "1.12.1"
 description = "Module for decorators, wrappers and monkey patching."
@@ -774,7 +799,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b681f785fe8707023fcdbd0779a67e400e9a86b0ef4143e0b6f97059e2aea028"
+content-hash = "c7de52aea298e34e0f43cb403d7bdf77f137bec0e81c3177471d7afba51566f9"
 
 [metadata.files]
 absl-py = [
@@ -1334,6 +1359,10 @@ scipy = [
     {file = "scipy-1.6.1-cp39-cp39-win_amd64.whl", hash = "sha256:a5193a098ae9f29af283dcf0041f762601faf2e595c0db1da929875b7570353f"},
     {file = "scipy-1.6.1.tar.gz", hash = "sha256:c4fceb864890b6168e79b0e714c585dbe2fd4222768ee90bc1aa0f8218691b11"},
 ]
+setuptools = [
+    {file = "setuptools-65.3.0-py3-none-any.whl", hash = "sha256:2e24e0bec025f035a2e72cdd1961119f557d78ad331bb00ff82efb2ab8da8e82"},
+    {file = "setuptools-65.3.0.tar.gz", hash = "sha256:7732871f4f7fa58fb6bdcaeadb0161b2bd046c85905dbaa066bdcbcc81953b57"},
+]
 six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
     {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
@@ -1373,46 +1402,15 @@ termcolor = [
     {file = "termcolor-1.1.0.tar.gz", hash = "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"},
 ]
 tflite-runtime = [
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-linux_aarch64.whl", hash = "sha256:358ba7558711ef451192fe5d34e369df686012885a08c99d63c3ada91aeb0f18"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-linux_aarch64.whl", hash = "sha256:358ba7558711ef451192fe5d34e369df686012885a08c99d63c3ada91aeb0f18"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-linux_armv7l.whl", hash = "sha256:22c89432aaeb02bd238f34be3f33a65db4b10697180594886a4530e8a0263f89"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-linux_armv7l.whl", hash = "sha256:22c89432aaeb02bd238f34be3f33a65db4b10697180594886a4530e8a0263f89"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-linux_x86_64.whl", hash = "sha256:8531bdd3f21c94d4953128a73b9df5bf39e93ba67c2a70e6daf572849ca388b1"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-linux_x86_64.whl", hash = "sha256:8531bdd3f21c94d4953128a73b9df5bf39e93ba67c2a70e6daf572849ca388b1"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-macosx_10_15_x86_64.whl", hash = "sha256:390095b6b53b5d70b5e72b1798c4388a0d3d029444da6ac276c764bcaaea30f3"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-macosx_10_15_x86_64.whl", hash = "sha256:390095b6b53b5d70b5e72b1798c4388a0d3d029444da6ac276c764bcaaea30f3"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-win_amd64.whl", hash = "sha256:403f35b5a2020fc72a21dfa19045459c1d0ce9c94eb05e4c206528cd0be41a33"},
-    {file = "tflite_runtime-2.5.0-cp35-cp35m-win_amd64.whl", hash = "sha256:403f35b5a2020fc72a21dfa19045459c1d0ce9c94eb05e4c206528cd0be41a33"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-linux_aarch64.whl", hash = "sha256:6bf0ff08f91a3bbd59dd7e26a12b3072949cb4d2d37b9d8cc512a305dfd4351f"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-linux_aarch64.whl", hash = "sha256:6bf0ff08f91a3bbd59dd7e26a12b3072949cb4d2d37b9d8cc512a305dfd4351f"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-linux_armv7l.whl", hash = "sha256:ccbae67bdb6915eb104d1256efd7f79e34ab8faf4e1b8621a71f5226b2156948"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-linux_armv7l.whl", hash = "sha256:ccbae67bdb6915eb104d1256efd7f79e34ab8faf4e1b8621a71f5226b2156948"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-linux_x86_64.whl", hash = "sha256:8f7bbf7660a12b25b52f9c4d636d7c0dbc36e0fc02d974179c573b52f9239e63"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-linux_x86_64.whl", hash = "sha256:8f7bbf7660a12b25b52f9c4d636d7c0dbc36e0fc02d974179c573b52f9239e63"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-macosx_10_15_x86_64.whl", hash = "sha256:00ef2ff6f8e59f7313104badeefeb7a788cd0389b1cfe1841e9d2492313fa33a"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-macosx_10_15_x86_64.whl", hash = "sha256:00ef2ff6f8e59f7313104badeefeb7a788cd0389b1cfe1841e9d2492313fa33a"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-win_amd64.whl", hash = "sha256:c28eb9813a437d1cba202f16809701cad6e08af5e78625b36106cecefd9a33b4"},
-    {file = "tflite_runtime-2.5.0-cp36-cp36m-win_amd64.whl", hash = "sha256:c28eb9813a437d1cba202f16809701cad6e08af5e78625b36106cecefd9a33b4"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-linux_aarch64.whl", hash = "sha256:848c7719cb43dda4b3df8899b34bc6f070bbc10676266a735b485336153ad219"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-linux_aarch64.whl", hash = "sha256:848c7719cb43dda4b3df8899b34bc6f070bbc10676266a735b485336153ad219"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-linux_armv7l.whl", hash = "sha256:1b448604c3f04eea05fef02cb6fbd9377ae5875acb16d27fe029b5c51749dfde"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-linux_armv7l.whl", hash = "sha256:1b448604c3f04eea05fef02cb6fbd9377ae5875acb16d27fe029b5c51749dfde"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-linux_x86_64.whl", hash = "sha256:a51f02c811c32dd8d9a003f9b6451734598e47f99d69ef35f9b6ced90517a016"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-linux_x86_64.whl", hash = "sha256:a51f02c811c32dd8d9a003f9b6451734598e47f99d69ef35f9b6ced90517a016"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:fb2f8d597a52c607bea2f060b0cc013abd9e8a7d5b58dea0a908ad0088608105"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:fb2f8d597a52c607bea2f060b0cc013abd9e8a7d5b58dea0a908ad0088608105"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-win_amd64.whl", hash = "sha256:3c612b47c4fdca34c7914889aaf5a82efc227ef3cf858623d1072c237158fe0e"},
-    {file = "tflite_runtime-2.5.0-cp37-cp37m-win_amd64.whl", hash = "sha256:3c612b47c4fdca34c7914889aaf5a82efc227ef3cf858623d1072c237158fe0e"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-linux_aarch64.whl", hash = "sha256:b87a4c152be05d3585521a1d5418f7645a4fb82965772489b983e93aae6bd9ac"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-linux_aarch64.whl", hash = "sha256:b87a4c152be05d3585521a1d5418f7645a4fb82965772489b983e93aae6bd9ac"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-linux_armv7l.whl", hash = "sha256:953f6b7e2a6679c39b95ef7957a6bd78fff4b5e0dd78244599cfa78037e19953"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-linux_armv7l.whl", hash = "sha256:953f6b7e2a6679c39b95ef7957a6bd78fff4b5e0dd78244599cfa78037e19953"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-linux_x86_64.whl", hash = "sha256:ad9f5a127cfad78af207c0f17b303ebf76099775d423115d81e06518209ce459"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-linux_x86_64.whl", hash = "sha256:ad9f5a127cfad78af207c0f17b303ebf76099775d423115d81e06518209ce459"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:a47cc42ed271d00c00ad5f1b4b2e9eec0e59e2903b3d71a3fa59faff0896c094"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:a47cc42ed271d00c00ad5f1b4b2e9eec0e59e2903b3d71a3fa59faff0896c094"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-win_amd64.whl", hash = "sha256:efcd5605885811b5a967494fdc64bb18b5fde145db12ded3e886fcc42b3666fa"},
-    {file = "tflite_runtime-2.5.0-cp38-cp38-win_amd64.whl", hash = "sha256:efcd5605885811b5a967494fdc64bb18b5fde145db12ded3e886fcc42b3666fa"},
+    {file = "tflite_runtime-2.10.0-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:32ecaa9cc10d3807218c9202df7e022e2182b0dd3cf69dc097551fbd85ca5735"},
+    {file = "tflite_runtime-2.10.0-cp37-cp37m-manylinux2014_armv7l.whl", hash = "sha256:b5c3baa3586b70021123d09a16310af8658858c3ac9bd5cdc513ccd7ad7abb19"},
+    {file = "tflite_runtime-2.10.0-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:351391fc467b872f4ed306af375bad98728082b93dae0631f20f40da71bc9b69"},
+    {file = "tflite_runtime-2.10.0-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:b68f6bf92dfb238db7c781f656c5abf3f8e95375606096b26cf517c7629922ae"},
+    {file = "tflite_runtime-2.10.0-cp38-cp38-manylinux2014_armv7l.whl", hash = "sha256:c0e91c7bfc26960da4898c85f8ae9bac47d73097c860ede901cc14ca12b9cc81"},
+    {file = "tflite_runtime-2.10.0-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:71d07943e41930bc16e089c7459fa925907e32d88600f07b9fa99c5a2820f0f0"},
+    {file = "tflite_runtime-2.10.0-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:a082929891945375051fecac97c4d95d360e962e0aa397cce87d9c3d25a671ff"},
+    {file = "tflite_runtime-2.10.0-cp39-cp39-manylinux2014_armv7l.whl", hash = "sha256:dd9c3651910227b09fb73c8b401dda11b9e2bf5c1ff6931589af4e6117404e95"},
+    {file = "tflite_runtime-2.10.0-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:7877f4f18cde72b3664029f40a4fd8d4eaf4d2c7905e5cf927463ee1dfd8e0ce"},
 ]
 threadpoolctl = [
     {file = "threadpoolctl-3.0.0-py3-none-any.whl", hash = "sha256:4fade5b3b48ae4b1c30f200b28f39180371104fccc642e039e0f2435ec8cc211"},
@@ -1438,6 +1436,10 @@ urllib3 = [
 werkzeug = [
     {file = "Werkzeug-2.0.1-py3-none-any.whl", hash = "sha256:6c1ec500dcdba0baa27600f6a22f6333d8b662d22027ff9f6202e3367413caa8"},
     {file = "Werkzeug-2.0.1.tar.gz", hash = "sha256:1de1db30d010ff1af14a009224ec49ab2329ad2cde454c8a708130642d579c42"},
+]
+wheel = [
+    {file = "wheel-0.37.1-py2.py3-none-any.whl", hash = "sha256:4bdcd7d840138086126cd09254dc6195fb4fc6f01c050a1d7236f2630db1d22a"},
+    {file = "wheel-0.37.1.tar.gz", hash = "sha256:e9a504e793efbca1b8e0e9cb979a249cf4a0a7b5b8c9e8b65a5e39d49529c1c4"},
 ]
 wrapt = [
     {file = "wrapt-1.12.1.tar.gz", hash = "sha256:b62ffa81fb85f4332a4f609cab4ac40709470da05643a082ec1eb88e6d9b97d7"},
