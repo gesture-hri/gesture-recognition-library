@@ -13,7 +13,7 @@ mediapipe = "0.8.9"
 opencv-python = "^4.5.2"
 numpy = "^1.12.1"
 Pillow = "^8.4.0"
-tflite-runtime = "2.5.0"
+tflite-runtime = "2.11.0"
 sklearn = "^0.0"
 
 [tool.poetry.dev-dependencies]
