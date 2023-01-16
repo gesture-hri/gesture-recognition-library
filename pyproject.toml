@@ -17,7 +17,7 @@ tflite-runtime = "2.5.0"
 sklearn = "^0.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.5"
+pytest = "^7.2.1"
 black = "21.7b0"
 
 [[tool.poetry.source]]
