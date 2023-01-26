@@ -8,7 +8,7 @@ setup(
         "tensorflow==2.6.0",
         "mediapipe==0.8.8.1",
         "opencv-python==4.5.3.56",
-        "sklearn==0.0",
+        "sklearn==0.0.post2",
         "keras==2.6.0",
         "numpy==1.19.5",
     ],
